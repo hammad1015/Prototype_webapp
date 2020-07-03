@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+	<div class="form-wrapper">
+	
+	{% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <h1>Login</h1>
+
+	<form method="POST" action="/login">
+		{{ form.csrf_token }}
+
+    	<fieldset class="email">
+        	{{ form.id.label }}
+        	{{ form.id(placeholder='youremail@example.com') }}
+        	{% if form.id.errors %}
+          	<ul class="errors">
+            	{% for error in form.id.errors %}
+              	<li>{{ error }}</li>{% endfor %}
+          	</ul>
+        	{% endif %}
+      	</fieldset>
+
+	      <fieldset class="password">
+	        {{ form.password.label }}
+	        {{ form.password }}
+	        {% if form.password.errors %}
+	          <ul class="errors">
+	            {% for error in form.password.errors %}
+	              <li>{{ error }}</li>{% endfor %}
+	          </ul>
+	        {% endif %}
+	      </fieldset>
+
+	      <div class="submit-button">
+	        {{ form.submit }}
+	      </div>
+		</form>
+	</div>
+
+
+{% endblock %}
