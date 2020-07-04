@@ -4,7 +4,7 @@ from flask_login import LoginManager
 #import configfile
 
 db = SQLAlchemy()
-#login_manager = LoginManager()
+login_manager = LoginManager()
 
 def create_app():
     """ Creating the Flask app and setting its config """
@@ -17,7 +17,7 @@ def create_app():
 
     #Initiaizaing Plugins
     db.__init__(app)
-    #login_manager.__init__(app)
+    login_manager.__init__(app)
 
     with app.app_context():
 
