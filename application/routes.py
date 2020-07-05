@@ -26,10 +26,18 @@ def load_user(user_id):
     #return None
 
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    """Redirect unauthorized users to Login page."""
+    flash('You must be logged in to view that page', 'danger')
+    return redirect(url_for('login'))
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         #print("User is is authenticated")
+        flash('You are already logged in', 'info')
         return redirect(url_for('profile'))  
 
     form = LoginForm()
@@ -41,9 +49,10 @@ def login():
             #print(user)
             login_user(user)
             #next_page = request.args.get('next')
+            flash(f'Welcome {user.username}', 'success')
             return redirect(url_for('profile'))
 
-        flash('Invalid username/password combination')
+        flash('Invalid username/password combination', 'danger')
         return redirect(url_for('login'))  
 
     return render_template('loginpage.html', form=form)  
@@ -57,7 +66,8 @@ def profile():
 
 
 @app.route("/logout", methods=['GET'])
+@login_required
 def logout():
     logout_user()
-    print("User is logged out")
+    flash('User logged out', 'info')
     return redirect(url_for('home'))

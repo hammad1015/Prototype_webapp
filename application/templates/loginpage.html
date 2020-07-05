@@ -4,9 +4,9 @@
 	<div class="form-wrapper">
 	
 	{% for message in get_flashed_messages() %}
-      <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <div class="alert alert-warning">        
         {{ message }}
+      </br></br>
       </div>
     {% endfor %}
 

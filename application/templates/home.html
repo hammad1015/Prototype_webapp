@@ -1,5 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
+	{% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">        
+        {{ message }}
+      </br></br>
+      </div>
+    {% endfor %}
+
     <h>This is the home page</h>
+    
+    <ul>
+   		<a href='/login'>Login</a>
+   	</ul>
+   	<ul>
+   		<a href='/about'>About Us</a>
+   	</ul>
+
+    
+
 {% endblock %}
