@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from . import db
 
 class User(db.Model, UserMixin):
+    #Attribute Columns
     id = db.Column(db.Integer, primary_key=True) 
     email = db.Column(db.String(75), unique=True) 
     username = db.Column(db.String(50), nullable=False) 
@@ -22,4 +23,58 @@ class User(db.Model, UserMixin):
         #return self
     	return "<User {}>".format(self.id)
     	#return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
+
+class Buyer(db.Model):
+    #Attribute Columns
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(75), nullable=False)
+    cnic = db.Column(db.Integer, nullable=False)
+    comments = db.Column(db.Text)
+
+    #Relationships
+
+    #This attribute would return the deal obect this buyer is associated to
+    deal = db.relationship("Plot", backref='buyer_object', uselist=False)
+
+class CommisionAgent(db.Model):
+    #Attribute Columns
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(75), nullable=False)
+    cnic = db.Column(db.Integer, nullable=False)
+    commission_rate = db.Column(db.Float, nullable=False)
+    comments = db.Column(db.Text)
+
+    #Relationships
+
+    #This attribute returns a list of deals that  are associated to a particular agent, when called
+    deals = db.relationship("Plot", backref='working_agent_object')
+
+class Plot(db.Model):
+    #Attribute Columns
+    id = id =  db.Column(db.Integer, primary_key=True)
+    adddress = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Integer)
+    size = db.Column(db.String(20))
+    status = db.Column(db.String(20), nullable=False)
+    comments = db.Column(db.Text)
+
+    #Relationships
+
+    #This attribute would return the deal obect this plot is associated to
+    deal = db.relationship("Plot", backref='plot_object', uselist=False)
+
+
+class Deal(db.Model):
+    #Attribute Columns
+    id =                db.Column(db.Integer, primary_key=True)
+    status =            db.Column(db.String(20), nullable=False)
+    signing_date =      db.Column(db.String(20), nullable=False)
+    comments =          db.Column(db.Text)
+
+    #ForeginKey Columns
+    working_agent_id =  db.Column(db.Integer, db.ForeginKey('commisionagent.id'), lazy=True)
+    plot_id =           db.Column(db.Integer, db.ForeginKey('plot.id'), unique=True)
+    buyer_id =          db.Column(db.Integer, db.ForeginKey('buyer.id'), unique=True)
+    
+
 
