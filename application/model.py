@@ -1,10 +1,11 @@
 from flask_login import UserMixin
+#from flask_sqlalchemy import null
 from . import db
 
 class User(db.Model, UserMixin):
     #Attribute Columns
-    id = db.Column(db.Integer, primary_key=True) 
-    email = db.Column(db.String(75), unique=True) 
+    id       = db.Column(db.Integer, primary_key=True) 
+    email    = db.Column(db.String(75), unique=True) 
     username = db.Column(db.String(50), nullable=False) 
     password = db.Column(db.String(100), nullable=False) 
     #is_admin = db.Column(db.String(50), default=False)
@@ -25,56 +26,81 @@ class User(db.Model, UserMixin):
     	#return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
 
 class Buyer(db.Model):
+    __tablename__ = 'buyer'
+
     #Attribute Columns
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(75), nullable=False)
-    cnic = db.Column(db.Integer, nullable=False)
-    comments = db.Column(db.Text)
+    id       = db.Column(db.Integer, primary_key=True)
+    name     = db.Column(db.String(75), nullable=False)
+    cnic     = db.Column(db.Integer, unique=True, nullable=False)
+    comments = db.Column(db.Text, default=db.null(), nullable=True)
 
-    #Relationships
-
+    #Relationships:
     #This attribute would return the deal obect this buyer is associated to
-    deal = db.relationship("Plot", backref='buyer_object', uselist=False)
+    deals = db.relationship("Deal", backref='buyer_object', lazy=True)
 
-class CommisionAgent(db.Model):
+class CommissionAgent(db.Model):
+    __tablename__ = 'commissionagent'
+
     #Attribute Columns
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(75), nullable=False)
-    cnic = db.Column(db.Integer, nullable=False)
+    id              = db.Column(db.Integer, primary_key=True)
+    name            = db.Column(db.String(75), nullable=False)
+    cnic            = db.Column(db.Integer, nullable=False)
     commission_rate = db.Column(db.Float, nullable=False)
-    comments = db.Column(db.Text)
+    comments        = db.Column(db.Text, nullable=True, default=None)
 
-    #Relationships
-
+    #Relationships:
     #This attribute returns a list of deals that  are associated to a particular agent, when called
-    deals = db.relationship("Plot", backref='working_agent_object')
+    deals = db.relationship("Deal", backref='working_agent_object', lazy=True)
 
 class Plot(db.Model):
+    __tablename__ = 'plot'
+
     #Attribute Columns
-    id = id =  db.Column(db.Integer, primary_key=True)
+    id       = db.Column(db.Integer, primary_key=True)
     adddress = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Integer)
-    size = db.Column(db.String(20))
-    status = db.Column(db.String(20), nullable=False)
-    comments = db.Column(db.Text)
+    price    = db.Column(db.Integer, nullable=False)
+    size     = db.Column(db.String(20), nullable=False)
+    status   = db.Column(db.String(20), nullable=False)
+    comments = db.Column(db.Text, nullable=True, default=None)
 
-    #Relationships
-
+    #Relationships:
     #This attribute would return the deal obect this plot is associated to
-    deal = db.relationship("Plot", backref='plot_object', uselist=False)
+    deal = db.relationship("Deal", backref='plot_object', uselist=False)
 
 
 class Deal(db.Model):
+    __tablename__ = 'deal'
+
     #Attribute Columns
-    id =                db.Column(db.Integer, primary_key=True)
-    status =            db.Column(db.String(20), nullable=False)
-    signing_date =      db.Column(db.String(20), nullable=False)
-    comments =          db.Column(db.Text)
+    id                     = db.Column(db.Integer, primary_key=True)
+    status                 = db.Column(db.String(20), nullable=False)
+    signing_date           = db.Column(db.String(20), nullable=False)
+    amount_per_installment = db.Column(db.Integer, nullable=False)
+    installment_frequency  = db.Column(db.String(20), nullable=False)
+    comments               = db.Column(db.Text, nullable=True, default=db.null())
 
     #ForeginKey Columns
-    working_agent_id =  db.Column(db.Integer, db.ForeginKey('commisionagent.id'), lazy=True)
-    plot_id =           db.Column(db.Integer, db.ForeginKey('plot.id'), unique=True)
-    buyer_id =          db.Column(db.Integer, db.ForeginKey('buyer.id'), unique=True)
+    working_agent_id = db.Column(db.Integer, db.ForeignKey('commissionagent.id'), nullable=True, default=None)
+    buyer_id         = db.Column(db.Integer, db.ForeignKey('buyer.id'), nullable=True, default=None)
+    plot_id          = db.Column(db.Integer, db.ForeignKey('plot.id'), nullable=False, unique=True)
+
+    #Relationships:
+    transactions = db.relationship("Transaction", backref="deal_object", lazy=True)
+
+
+class Transaction(db.Model):
+    __tablename__ = 'transaction'
+
+    #Attribute Columns
+    id  = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Integer, nullable=False)
+    date_time = db.Column(db.DateTime, nullable=False)
+    comments = db.Column(db.Text, nullable=True, default=None)
+
+    #ForeginKey Columns
+    deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=False)
+    #expense_id = Foreginkey reference to Expense table
+    
     
 
 

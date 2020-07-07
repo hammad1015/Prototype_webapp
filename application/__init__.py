@@ -4,6 +4,7 @@ from flask_login import LoginManager
 #import configfile
 
 db = SQLAlchemy()
+#print(db.null())
 login_manager = LoginManager()
 
 def create_app():
@@ -25,7 +26,7 @@ def create_app():
         from . import routes
 
         #Creating tables in the database
-        #db.create_all()
+        db.create_all()
 
         #print(app.config)
 

@@ -1,9 +1,10 @@
 from flask import Blueprint, redirect, render_template, flash, request, session, url_for
 from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
+from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm
-from .model import db, User
+from .forms import LoginForm, CreateBuyerForm
+from .model import db, User, Buyer
 from . import login_manager
 
 
@@ -21,9 +22,7 @@ def about():
 #This function should return the user for the user_id
 @login_manager.user_loader
 def load_user(user_id):
-    #print("IN user_loader:", user_id, type(user_id))
     return User.query.get(int(user_id))
-    #return None
 
 
 @login_manager.unauthorized_handler
@@ -36,19 +35,16 @@ def unauthorized():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        #print("User is is authenticated")
         flash('You are already logged in', 'info')
         return redirect(url_for('profile'))  
 
     form = LoginForm()
     # Validate login attempt
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()  
+        user = User.query.filter_by(email=form.email.data).first()
+
         if user and user.check_password(password1=form.password.data):
-            #print("********************88\n", user, "\n********************")
-            #print(user)
             login_user(user)
-            #next_page = request.args.get('next')
             flash(f'Welcome {user.username}', 'success')
             return redirect(url_for('profile'))
 
@@ -63,6 +59,34 @@ def login():
 @login_required
 def profile():
     return render_template('profile.html', current_user=current_user)
+
+
+@app.route("/createbuyer", methods=['GET', 'POST'])
+@login_required
+def createbuyer():
+
+    form = CreateBuyerForm()
+    if form.validate_on_submit():        
+        try:
+            buyer = Buyer(
+                id       = form.id.data,
+                name     = form.name.data,
+                cnic     = form.cnic.data,
+                comments = form.comments.data if form.comments.data else db.null()
+            )
+
+            db.session.add(buyer)
+            db.session.commit()
+
+        except sqlalchemy.exc.IntegrityError:
+            flash("ERROR: A buyer with this id or CNIC already exists!")
+            return redirect(url_for('createbuyer'))        
+
+        finally:
+            flash(f"Buyer with id '{buyer.id}' created", 'success')
+            return redirect(url_for('profile'))
+
+    return render_template('createbuyer.html',  form=form)
 
 
 @app.route("/logout", methods=['GET'])
