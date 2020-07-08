@@ -15,3 +15,15 @@ class CreateBuyerForm(FlaskForm):
 	cnic 	 = IntegerField('CNIC', validators=[DataRequired()])
 	comments = TextField('Comments', validators=[])
 	submit 	 = SubmitField('Create Buyer')
+
+
+#Create Deal Form 
+class CreateDealForm(FlaskForm):
+	id 						= IntegerField('Deal ID', validators=[DataRequired()])
+	buyer_id 				= IntegerField('Buyer ID', validators=[DataRequired()])
+	plot_id 				= IntegerField('Plot ID', validators=[DataRequired()])
+	first_amount_recieved 	= IntegerField('First Paid Amount',  validators=[DataRequired()])
+	amount_per_installment 	= IntegerField('Amount per Installment', validators=[DataRequired()])
+	installment_frequency 	= StringField('Installments per Year',  validators=[DataRequired()])
+	submit 					= SubmitField('Create Deal')
+	comments 				= TextField('Comments', validators=[])

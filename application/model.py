@@ -92,10 +92,10 @@ class Transaction(db.Model):
     __tablename__ = 'transaction'
 
     #Attribute Columns
-    id  = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Integer, nullable=False)
+    id        = db.Column(db.Integer, primary_key=True)
+    amount    = db.Column(db.Integer, nullable=False)
     date_time = db.Column(db.DateTime, nullable=False)
-    comments = db.Column(db.Text, nullable=True, default=None)
+    comments  = db.Column(db.Text, nullable=True, default=None)
 
     #ForeginKey Columns
     deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=False)
