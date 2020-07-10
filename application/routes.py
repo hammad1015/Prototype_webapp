@@ -59,7 +59,7 @@ def login():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    anchor_dict = {"Create Buyer":"/createbuyer", "Logout":"/logout"}
+    anchor_dict = {"Create Buyer":"/createbuyer", "Create Deal":"/createdeal", "Logout":"/logout"}
     return render_template('profile.html', current_user=current_user, anchor_dict=anchor_dict)
 
 
@@ -80,14 +80,13 @@ def createbuyer():
             db.session.add(buyer)
             db.session.commit()
 
-        except sqlalchemy.exc.IntegrityError:
-            flash("ERROR: A buyer with this id or CNIC already exists!")
-            return redirect(url_for('createbuyer'))        
-
-        finally:
             flash(f"Buyer with id '{buyer.id}' created", 'success')
             return redirect(url_for('profile'))
 
+        except sqlalchemy.exc.IntegrityError:
+            flash("ERROR: A buyer with this id or CNIC already exists!")
+            return render_template('createbuyer.html', form=form)         
+            
     return render_template('createbuyer.html',  form=form)
 
 @app.route("/createdeal", methods=['GET', 'POST'])
@@ -96,54 +95,68 @@ def createdeal():
 
     form = CreateDealForm()
     if form.validate_on_submit():
-        #Quering the mentioned plot
-        try:
-            plot = Plot.query.filter_by(id=form.plot_id.data).first()
-        except Exception:
-            flash(f"No plot exists with Plot ID: {form.plot_id.data}")
-            return redirect(url_for('createdeal'))
-        finally:
-            if plot.status.lower() == "sold":
-                flash(f"The plot with Plot ID: {form.plot_id.data} is  already sold")
-                return redirect(url_for('profile'))
-            elif plot.status.lower() == "on going":
-                flash(f"The plot with Plot ID: {form.plot_id.data} is  already a part of an on going deal with ID: {plot.deal.id}")
-                return redirect(url_for('profile'))
+        #Quering the mentioned plot and buyer returns None is no such pot exists        
+        plot = Plot.query.filter_by(id=form.plot_id.data).first()
+        buyer = Buyer.query.filter_by(id=form.buyer_id.data).first()
 
-        ##UPDATE CORESPONDING PLOT STATUS 
+        ##Applying validity checks
+        if plot is None:       
+            flash(f"No plot exists with Plot ID: {form.plot_id.data}")
+            return render_template('createdeal.html', form=form)
+
+        if buyer is None:
+            flash(f"No buyer exists with Buyer ID: {form.buyer_id.data}")
+            return render_template('createdeal.html', form=form)
+
+        if plot.deal is not None:        
+            flash(f"The Plot with ID {plot.id} cannot be sold")
+            flash(f"Plot Status: {plot.status}")
+            flash(f"Plot's Deal ID: {plot.deal.id}")
+            return render_template('createdeal.html', form=form)
+            #if plot.status.lower() == "sold":
+            #    flash(f"The plot with Plot ID: {form.plot_id.data} is  already sold")
+            #    return render_template('createdeal.html', form=form)
+            #elif plot.status.lower() == "in a deal":
+            #    flash(f"The plot with Plot ID: {form.plot_id.data} is  already a part of an on going deal with ID: {plot.deal.id}")
+            #    return render_template('createdeal.html', form=form)
+
+        ##UPDATING CORESPONDING PLOT STATUS
+        plot.status = 'sold' if form.first_amount_recieved.data == plot.price else 'in a deal'
+        #db.session.commit()
 
         try:
             #Creating Deal object
             deal = Deal(
-                id = form.id.data,
-                buyer_id = form.buyer_id.data,
-                plot_id = form.plot_id.data,
-                signing_date = datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                status = 'sold' if form.first_amount_recieved.data == plot.price else 'on going',
-                amount_per_installment = form.amount_per_installment.data,
-                installment_frequency = form.installment_frequency.data,
-                comments = form.comments.data if form.comments.data else db.null()
+                id                      = form.id.data,
+                buyer_id                = form.buyer_id.data,
+                plot_id                 = form.plot_id.data,
+                signing_date            = datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                status                  = 'finished' if form.first_amount_recieved.data == plot.price else 'on going',
+                amount_per_installment  = form.amount_per_installment.data,
+                installment_frequency   = form.installment_frequency.data,
+                comments                = form.comments.data if form.comments.data else db.null()
             )
 
             db.session.add(deal)
-            db.session.commit()
+            #db.session.commit()
 
         except sqlalchemy.exc.IntegrityError:
             flash("ERROR: A deal with this ID already exists!")
-            return redirect(url_for('createdeal'))
+            return render_template('createdeal.html', form=form)
 
         
         #Creating corresponding transaction
         transaction = Transaction(
             amount = form.first_amount_recieved.data,
-            date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            date_time = datetime.now(),   #.strftime("%d/%m/%Y %H:%M:%S"),
             comments = f"Initial Transaction for Deal {form.id.data}",
             deal_id = form.id.data
         )
 
         db.session.add(transaction)
         db.session.commit()
-
+        flash(f"Deal with ID {deal.id} successfully created!")
+        return redirect(url_for('profile'))
 
     return render_template('createdeal.html', form=form)
 

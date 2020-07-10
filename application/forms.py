@@ -25,5 +25,5 @@ class CreateDealForm(FlaskForm):
 	first_amount_recieved 	= IntegerField('First Paid Amount',  validators=[DataRequired()])
 	amount_per_installment 	= IntegerField('Amount per Installment', validators=[DataRequired()])
 	installment_frequency 	= StringField('Installments per Year',  validators=[DataRequired()])
-	submit 					= SubmitField('Create Deal')
 	comments 				= TextField('Comments', validators=[])
+	submit 					= SubmitField('Create Deal')
