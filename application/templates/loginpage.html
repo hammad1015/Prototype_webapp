@@ -3,9 +3,9 @@
 {% block content %}
 	<div class="form-wrapper">
 	
-	{% for message in get_flashed_messages() %}
-      <div class="alert alert-warning">        
-        {{ message }}
+	{% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="alert alert-warning">
+        <p class="{{ category }}">{{ message }}</p>
       </br></br>
       </div>
     {% endfor %}

@@ -113,12 +113,7 @@ def createdeal():
             flash(f"Plot Status: {plot.status}")
             flash(f"Plot's Deal ID: {plot.deal.id}")
             return render_template('createdeal.html', form=form)
-            #if plot.status.lower() == "sold":
-            #    flash(f"The plot with Plot ID: {form.plot_id.data} is  already sold")
-            #    return render_template('createdeal.html', form=form)
-            #elif plot.status.lower() == "in a deal":
-            #    flash(f"The plot with Plot ID: {form.plot_id.data} is  already a part of an on going deal with ID: {plot.deal.id}")
-            #    return render_template('createdeal.html', form=form)
+
 
         ##UPDATING CORESPONDING PLOT STATUS
         plot.status = 'sold' if form.first_amount_recieved.data == plot.price else 'in a deal'
@@ -148,7 +143,7 @@ def createdeal():
         #Creating corresponding transaction
         transaction = Transaction(
             amount = form.first_amount_recieved.data,
-            date_time = datetime.now(),   #.strftime("%d/%m/%Y %H:%M:%S"),
+            date_time = datetime.now(),  
             comments = f"Initial Transaction for Deal {form.id.data}",
             deal_id = form.id.data
         )
