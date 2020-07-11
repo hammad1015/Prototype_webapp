@@ -59,8 +59,14 @@ def login():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    anchor_dict = {"Create Buyer":"/createbuyer", "Create Deal":"/createdeal", "Logout":"/logout"}
+    anchor_dict = {"Create Buyer":"/createbuyer", "Create Deal":"/createdeal", "Map":"/map", "Logout":"/logout"}
     return render_template('profile.html', current_user=current_user, anchor_dict=anchor_dict)
+
+
+@app.route("/map", methods=['GET'])
+@login_required
+def map():
+    return render_template('map.html')
 
 
 @app.route("/createbuyer", methods=['GET', 'POST'])

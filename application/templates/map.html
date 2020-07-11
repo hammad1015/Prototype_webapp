@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+ <img src = "static/PLAN-1.PNG" width="1700px" height="2600px" align="middle" usemap="map" /> 
+
+ <map name = "map">
+         
+         <area shape = "rect" 
+            coords = "22,83,126,125"
+            href = "/home" alt = "HTML Tutorial" 
+            target = "_self" 
+            onMouseOver = "showTutorial('html')" 
+            onMouseOut = "showTutorial('')"/>
+         
+      </map>
+
+{% endblock %}
