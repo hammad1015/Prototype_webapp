@@ -69,6 +69,18 @@ def map():
     return render_template('map.html')
 
 
+@app.route("/plot/<plot_id>")
+@login_required
+def plotinfo(plot_id):
+    plot_id = int(plot_id) 
+    plot = Plot.query.filter_by(id=plot_id).first()
+
+    if plot is None:
+        flash('ERROR: NO Such plot exists')
+        
+    return render_template('plotinfo.html', plot=plot)
+
+
 @app.route("/createbuyer", methods=['GET', 'POST'])
 @login_required
 def createbuyer():

@@ -3,14 +3,7 @@
 {% block content %}
 	<div class="form-wrapper">
 	
-	{% for message in get_flashed_messages() %}
-      <div class="alert alert-warning">        
-        {{ message }}
-      </br></br>
-      </div>
-    {% endfor %}
-
-    <h1>Create Deal</h1>
+	<h1>Create Deal</h1>
 
 	<form method="POST" action="/createdeal">
 		{{ form.csrf_token }}

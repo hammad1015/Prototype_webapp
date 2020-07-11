@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+	<h1>Plot Info:</h1>
+    <p>
+    Plot ID: {{ plot.id }}</br>
+    Plot Address: {{ plot.adddress }}</br>
+    Plot Price: {{ plot.price }}</br>
+    Plot Size: {{ plot.size }}</br>
+    Status: {{ plot.status }}</br>
+    {% if plot.comments %}
+      Comments: {{ plot.comments }}</br>
+    {% endif %}
+    {% if plot.deal %}
+      Plot's Deal: {{ plot.deal.id }}</br>
+    {% endif %}
+    </p>
+
+{% endblock %}

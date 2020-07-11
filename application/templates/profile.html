@@ -1,13 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block content %}
-
-	{% for category, message in get_flashed_messages(with_categories=true) %}
-      <div class="alert alert-warning">        
-        <p class="{{ category }}">{{ message }}</p>
-        </br></br>
-      </div>
-    {% endfor %}
+{% block content %}	
 
     <h>This is the Profile page</h>
     <h1>Username: {{current_user.username}}</h1></br>

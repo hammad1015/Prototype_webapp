@@ -2,17 +2,29 @@
 
 {% block content %}
 
- <img src = "static/PLAN-1.PNG" width="1700px" height="2600px" align="middle" usemap="map" /> 
+ <img src = "static/PLAN-1.PNG" width="1700px" height="2600px" align="middle" usemap="#map" />  
 
- <map name = "map">
-         
-         <area shape = "rect" 
-            coords = "22,83,126,125"
-            href = "/home" alt = "HTML Tutorial" 
-            target = "_self" 
-            onMouseOver = "showTutorial('html')" 
-            onMouseOut = "showTutorial('')"/>
-         
-      </map>
+ 	<map name="map">
+ 		{% for i in range(878, 1323, 68) %}
+
+        	<area shape = "rect" 
+            	  coords = "{{i}},2140,{{i+68}},2270"            
+            	  href = /plot/{{((i-878)//68)+1}}	
+            	  target = "_self"
+         	/>
+
+    	{% endfor %} 
+		{% for i in range(456, 797, 68) %}
+
+        	<area shape = "rect" 
+            	  coords = "{{i}},2140,{{i+68}},2270"            
+            	  href = /plot/{{90-((i-878)//68)}}	
+            	  target = "_self"
+         	/>
+
+   		{% endfor %} 
+
+    </map>
+
 
 {% endblock %}
