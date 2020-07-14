@@ -1,61 +1,65 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-	<div class="form-wrapper">
-	
-    <h1>Create Buyer</h1>
+  <div class="content-section">
+    <form method="POST" action="/createbuyer">
+	  <fieldset class="form-group">
 
-	<form method="POST" action="/createbuyer">
 		{{ form.csrf_token }}
+        <legend>Add Buyer</legend>
 
-    	<fieldset class="text">
-        	{{ form.id.label }}
-        	{{ form.id(placeholder='') }}        	
-        	{% if form.id.errors %}
-          	<ul class="errors">
-            	{% for error in form.id.errors %}
-              	<li>{{ error }}</li>{% endfor %}
-          	</ul>
-        	{% endif %}
-      	</fieldset>
+		  <div class="form-group">
+        	{{ form.name.label }}
+        	{% if form.name.errors %}
+        	  {{ form.name(class='form-control form-control-lg is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.name(class='form-control form-control-lg') }}
+            {% endif %}
+ 
+      	  </div>
+	      
+		  <div class="form-group">
+        	{{ form.cnic.label }}
+     	
+        	{% if form.cnic.errors %}
+        	  {{ form.cnic(class='form-control form-control-lg is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.cnic.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.cnic(class='form-control form-control-lg') }}
+            {% endif %}
+ 
+      	  </div>
 
-	      <fieldset class="text">
-	        {{ form.name.label }}
-	        {{ form.name(placeholder='') }}
-	        {% if form.name.errors %}
-	          <ul class="errors">
-	            {% for error in form.name.errors %}
-	              <li>{{ error }}</li>{% endfor %}
-	          </ul>
-	        {% endif %}
-	      </fieldset>
-
-		<fieldset class="text">
-	        {{ form.cnic.label }}
-	        {{ form.cnic(placeholder='Enter only numbers') }}
-	        {% if form.cnic.errors %}
-	          <ul class="errors">
-	            {% for error in form.cnic.errors %}
-	              <li>{{ error }}</li>{% endfor %}
-	          </ul>
-	        {% endif %}
-	      </fieldset>
-
-	      <fieldset class="text">
-	        {{ form.comments.label }}
-	        {{ form.comments(placeholder='Leave Empty if no comments') }}
-	        {% if form.comments.errors %}
-	          <ul class="errors">
-	            {% for error in form.comments.errors %}
-	              <li>{{ error }}</li>{% endfor %}
-	          </ul>
-	        {% endif %}
-	      </fieldset>
+		  <div class="form-group">
+        	{{ form.comments.label }}
+     	
+        	{% if form.comments.errors %}
+        	  {{ form.comments(class='form-control form-control-lg is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.comments.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.comments(class='form-control form-control-lg') }}
+            {% endif %}
+ 
+      	  </div>
 
 
-	      <div class="submit-button">
-	        {{ form.submit }}
+	      <div class="form-group">
+	        {{ form.submit(class='btn btn-outline-info') }}
 	      </div>
+	  </fieldset>
 		</form>
 	</div>
 

@@ -59,7 +59,7 @@ def login():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    anchor_dict = {"Create Buyer":"/createbuyer", "Create Deal":"/createdeal", "Map":"/map", "Logout":"/logout"}
+    anchor_dict = {"Add Buyer":"/createbuyer", "Add Deal":"/createdeal", "Map":"/map"}
     return render_template('profile.html', current_user=current_user, anchor_dict=anchor_dict)
 
 
@@ -76,7 +76,7 @@ def plotinfo(plot_id):
     plot = Plot.query.filter_by(id=plot_id).first()
 
     if plot is None:
-        flash('ERROR: NO Such plot exists')
+        flash('ERROR: NO Such plot exists', 'danger')
         
     return render_template('plotinfo.html', plot=plot)
 
@@ -89,7 +89,7 @@ def createbuyer():
     if form.validate_on_submit():        
         try:
             buyer = Buyer(
-                id       = form.id.data,
+                #id       = form.id.data,
                 name     = form.name.data,
                 cnic     = form.cnic.data,
                 comments = form.comments.data if form.comments.data else db.null()
@@ -102,7 +102,7 @@ def createbuyer():
             return redirect(url_for('profile'))
 
         except sqlalchemy.exc.IntegrityError:
-            flash("ERROR: A buyer with this id or CNIC already exists!")
+            flash("ERROR: A buyer with this CNIC already exists!", "danger")
             return render_template('createbuyer.html', form=form)         
             
     return render_template('createbuyer.html',  form=form)
@@ -119,7 +119,7 @@ def createdeal():
 
         ##Applying validity checks
         if plot is None:       
-            flash(f"No plot exists with Plot ID: {form.plot_id.data}")
+            flash(f"No plot exists with Plot ID: {form.plot_id.data}",  "danger")
             return render_template('createdeal.html', form=form)
 
         if buyer is None:

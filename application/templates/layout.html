@@ -11,7 +11,7 @@
 
     <!-- CSS and Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <!-- Link Custom CSS File -->
+    <link rel="stylesheet" href="/static/main.css">
 
     <title>Prototype</title>
         
@@ -22,31 +22,54 @@
     <header class="site-header">
       <nav class="navbar bg-dark navbar-dark fixed-top navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand ml-4" href="/">Prototype</a> 
-        </div>
+          <a class="navbar-brand ml-4" href="/"><img src="/static/logo.png" height="40px"></a>
+         
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span clas="navbar-toggler-icon"></span>
-        </button>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span clas="navbar-toggler-icon"></span>
+          </button>
 
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link active" href="/">Home</a>
-            <a class="nav-item nav-link active" href="/about">About</a>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="/">Home</a>
+              <a class="nav-item nav-link" href="/about">About</a>
+            </div>
+
+            <!-- Navigation bar extreme-right side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('profile') }}">Profile</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+              {% else %}
+                 <a class="nav-item nav-link" href="#">Map</a>
+                 <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+              {% endif %}
           </div>
-        </div>
+        </div>  
       </nav>  
     </header>
 
     <!-- Flash Messages -->
-    {% for category, message in get_flashed_messages(with_categories=true) %}
-        <div class="alert alert-warning">        
-          <p class="{{ category }}">{{ message }}</p>
-          </br>
-        </div>
-    {% endfor %}
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <br><br><br>  
+          {% for category, message in get_flashed_messages(with_categories=true) %}
+            {% if message %}
+              <div class="alert alert-{{ category }}">                     
+                {{ message }}
+                </br>
+              </div>
+            {% endif %}
+          {% endfor %}
 
-    {% block content %} {% endblock %}
+          {% block content %} {% endblock %}
+
+        </div>
+      </div>
+    </main>
+
+    
 
     <!-- JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

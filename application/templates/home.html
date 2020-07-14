@@ -1,41 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <div id="header">
-
-  </div>
-
-  <div id="left">
-
-  </div>
-
-  <div id="right">
-
-  </div>
-
-  <div id="footer">
-
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!--
     <div class="header">
 
@@ -52,17 +17,36 @@
       <div class="headerrightside">    
         <a href='/about'>About Us</a>
       </div> 
-    </div>
-
-    <div class="clear"></div>
-
-    <div class="homeimages">
-      <img src="/static/house 1.jpg" height="300px" width="400px">
-    </div>
-
-    <div class="homeimages">
-      <img src="/static/house 2.jpeg" height="300px" width="350px">
     </div> -->
 
+
+    <div class="row">
+    <div class="col">
+      <img class="rounded float-left img-fluid m-5" src="/static/house 1.jpg">
+    </div>
+
+    <div class="col">
+      <img class="rounded float-left img-fluid m-5" src="/static/house 2.jpeg">
+    </div>
+    </div>
+    <div class="row">
+      <img class="rounded img-fluid m-5" src="/static/house 3.jpg">
+
+    </div>
+
+    <div class="row">
+     <img class="rounded img-fluid m-5" src="/static/house 4.jpg">
+
+    </div>
+
+    <div class="row">
+    <div class="col">
+      <img class="rounded float-left img-fluid m-5" src="/static/house 5.jpg">
+    </div>
+
+    <div class="col">
+      <img class="rounded float-left img-fluid m-5" src="/static/house 6.jpg">
+    </div>
+    </div>
 
 {% endblock %}
