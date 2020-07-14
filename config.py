@@ -1,20 +1,24 @@
 from os import environ
 
-class Config:    
-    FLASK_APP = 'wsgi.py'
-    SECRET_KEY = environ.get("FlaskPrototypeSecretKey")
-    STATIC_FOLDER = 'static'
-    TEMPLATES_FOLDER = 'templates'
+class Config:
+    
+    FLASK_APP           = 'wsgi.py'
+    SECRET_KEY          = environ.get("FlaskPrototypeSecretKey")
+    STATIC_FOLDER       = 'static'
+    TEMPLATES_FOLDER    = 'templates'
 
-
+    
 class DevelopmentConfig(Config):
-    ENV = environ.get('FlaskPrototypeDevEnv')
-    DEBUG = True
-    TESTING = True
+    
+    ENV                     = environ.get('FlaskPrototypeDevEnv')
+    DEBUG                   = True
+    TESTING                 = True
     SQLALCHEMY_DATABASE_URI = environ.get('FlaskPrototypeDevDB')
 
+    
 class ProductionConfig(Config):
-    ENV = environ.get('FlaskPrototypeProdEnv')
-    DEBUG = False
-    TESTING = False
-    #SQLALCHEMY_DATABASE_URI = # production db uri string #
+    
+    ENV                         = environ.get('FlaskPrototypeProdEnv')
+    DEBUG                       = False
+    TESTING                     = False
+    #SQLALCHEMY_DATABASE_URI    = # production db uri string #
