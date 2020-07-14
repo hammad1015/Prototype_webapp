@@ -1,0 +1,69 @@
+h{
+    font-size:25px;
+}
+
+#header{
+
+}
+
+#left{
+
+}
+
+#right{
+
+}
+
+#footer{
+
+}
+
+
+
+
+
+
+.header{
+    background-color: #126950;
+    height:70px;
+    margin-top: 0px;
+    font-family: arial;
+    font-color: #ffffff; 
+    padding: 5px;
+
+}            
+
+.header h1{
+    margin-left: 50px 
+}
+
+.headerrightside{
+    margin: 30px;
+    text-align: right; 
+    float: right;
+}
+
+            .headerrightside a{
+                text-decoration: none;
+                color: #ffffff;
+            }
+
+            .headerrightside a:hover{
+                text-decoration: none;
+                color: #0000aa;
+            }
+
+            .floatleft{
+                float:left;
+            }
+
+.clear{
+    clear: both;
+}
+
+.homeimages{
+    float: left;
+    position: relative;
+    display: block;
+    margin:100px;
+}
