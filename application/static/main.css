@@ -4,19 +4,19 @@
     float: right;
 }
 
-            .headerrightside a{
-                text-decoration: none;
-                color: #ffffff;
-            }
+.headerrightside a{
+    text-decoration: none;
+    color: #ffffff;
+}
 
-            .headerrightside a:hover{
-                text-decoration: none;
-                color: #0000aa;
-            }
+.headerrightside a:hover{
+    text-decoration: none;
+    color: #0000aa;
+}
 
-            .floatleft{
-                float:left;
-            }
+.floatleft{
+    float:left;
+}
 
 .clear{
     clear: both;
