@@ -1,7 +1,6 @@
 .headerrightside{
     margin: 30px;
     text-align: right; 
-    float: right;
 }
 
 .headerrightside a{
@@ -22,9 +21,7 @@
     clear: both;
 }
 
-.homeimages{
-    float: left;
-    position: relative;
-    display: block;
-    margin:100px;
+.homeTopImage{
+    background: url('/static/house 3.jpg'); 
+    height: 500px;
 }

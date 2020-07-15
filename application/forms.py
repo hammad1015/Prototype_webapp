@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask import Markup
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Length, number_range
 
@@ -21,7 +22,7 @@ class CreateBuyerForm(FlaskForm):
 #Create Deal Form 
 class CreateDealForm(FlaskForm):
 
-	id 						= IntegerField('Deal ID', validators=[DataRequired()])
+	#id 						= IntegerField('Deal ID', validators=[DataRequired()])
 	buyer_id 				= IntegerField('Buyer ID', validators=[DataRequired()])
 	plot_id 				= IntegerField('Plot ID', validators=[DataRequired()])
 	first_amount_recieved 	= IntegerField('First Paid Amount',  validators=[DataRequired()])

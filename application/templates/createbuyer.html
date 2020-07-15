@@ -11,14 +11,14 @@
 		  <div class="form-group">
         	{{ form.name.label }}
         	{% if form.name.errors %}
-        	  {{ form.name(class='form-control form-control-lg is-invalid') }}
+        	  {{ form.name(class='form-control is-invalid') }}
           	  <div class="invalid-feedback">
                 {% for error in form.name.errors %}
                   <span>{{ error }}</span>
                 {% endfor %}
           	  </div>
           	{% else %}
-              {{ form.name(class='form-control form-control-lg') }}
+              {{ form.name(class='form-control') }}
             {% endif %}
  
       	  </div>
@@ -27,14 +27,14 @@
         	{{ form.cnic.label }}
      	
         	{% if form.cnic.errors %}
-        	  {{ form.cnic(class='form-control form-control-lg is-invalid') }}
+        	  {{ form.cnic(class='form-control is-invalid') }}
           	  <div class="invalid-feedback">
                 {% for error in form.cnic.errors %}
                   <span>{{ error }}</span>
                 {% endfor %}
           	  </div>
           	{% else %}
-              {{ form.cnic(class='form-control form-control-lg') }}
+              {{ form.cnic(placeholder="Enter numbers only", class='form-control') }}
             {% endif %}
  
       	  </div>
@@ -43,20 +43,20 @@
         	{{ form.comments.label }}
      	
         	{% if form.comments.errors %}
-        	  {{ form.comments(class='form-control form-control-lg is-invalid') }}
+        	  {{ form.comments(class='form-control is-invalid') }}
           	  <div class="invalid-feedback">
                 {% for error in form.comments.errors %}
                   <span>{{ error }}</span>
                 {% endfor %}
           	  </div>
           	{% else %}
-              {{ form.comments(class='form-control form-control-lg') }}
+              {{ form.comments(placeholder="Leave empty if no comments", class='form-control') }}
             {% endif %}
  
       	  </div>
 
 	      <div class="form-group">
-	        {{ form.submit(class='btn btn-outline-info') }}
+	        {{ form.submit(class='btn btn-outline-dark') }}
 	      </div>
 
 	  </fieldset>
