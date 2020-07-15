@@ -2,23 +2,23 @@
 
 {% block content %}
 
- <img src = "static/PLAN-1.PNG" width="1700px" height="2600px" align="middle" usemap="#map" />  
+ <img src = "static/PLAN-1.PNG" width="850px" height="1300px" align="middle" usemap="#map"/>  
 
  	<map name="map">
- 		{% for i in range(878, 1323, 68) %}
+ 		{% for i in range(438, 678, 34) %}
 
         	<area shape = "rect" 
-            	  coords = "{{i}},2140,{{i+68}},2270"            
-            	  href = /plot/{{((i-878)//68)+1}}	
+            	  coords = "{{i}},1070,{{i+34}},1135"            
+            	  href = /plot/{{((i-438)//34)+1}}
             	  target = "_self"
          	/>
 
     	{% endfor %} 
-		{% for i in range(456, 797, 68) %}
+		{% for i in range(228, 399, 34) %}
 
         	<area shape = "rect" 
-            	  coords = "{{i}},2140,{{i+68}},2270"            
-            	  href = /plot/{{90-((i-878)//68)}}	
+            	  coords = "{{i}},1070,{{i+34}},1135"            
+            	  href = /plot/{{90-((i-228)//34)}}	
             	  target = "_self"
          	/>
 

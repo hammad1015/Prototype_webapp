@@ -41,8 +41,8 @@
                 <a class="nav-item nav-link" href="{{ url_for('profile') }}">Profile</a>
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
               {% else %}
-                 <a class="nav-item nav-link" href="#">Map</a>
-                 <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="#">Map</a>
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
               {% endif %}
           </div>
         </div>  
@@ -60,7 +60,6 @@
             {% if message %}
               <div class="alert alert-{{ category }}">                     
                 {{ message }}
-                </br>
               </div>
             {% endif %}
           {% endfor %}
@@ -73,7 +72,7 @@
         <div class="col-md-3 px-5 py-5 my-5">
           <br>
           <div class="content-section bg-light border border-info rounded">
-            <legend class="text-center">Side Bar</legend>
+            <legend class="text-center">Menu</legend>
             <p class="text-muted">
               <ul class="list-group">
                 <a class="nav-link nav-item" href="#">Link 1</a>
@@ -87,7 +86,7 @@
                 <a class="nav-link nav-item" href="#">Link 9</a>
               </ul>
             </p>
-          </div>
+          </div> 
       </div>
     </main>    
 
