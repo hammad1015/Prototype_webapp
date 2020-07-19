@@ -2,7 +2,7 @@
 
 {% block content %}
 
- <img src = "static/PLAN-1.PNG" width="850px" height="1300px" align="middle" usemap="#map"/>  
+ <img id="plan1" src = "static/PLAN-1.PNG" width="850px" height="1300px" align="middle" usemap="#map"/>  
 
  	<map name="map">
  		{% for i in range(438, 678, 34) %}
@@ -10,7 +10,8 @@
         	<area shape = "rect" 
             	  coords = "{{i}},1070,{{i+34}},1135"            
             	  href = /plot/{{((i-438)//34)+1}}
-            	  target = "_self"
+                  name = {{((i-438)//34)+1}}
+            	  target = "_blank"
          	/>
 
     	{% endfor %} 
@@ -19,7 +20,7 @@
         	<area shape = "rect" 
             	  coords = "{{i}},1070,{{i+34}},1135"            
             	  href = /plot/{{90-((i-228)//34)}}	
-            	  target = "_self"
+            	  target = "_blank"
          	/>
 
    		{% endfor %} 

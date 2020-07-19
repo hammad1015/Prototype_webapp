@@ -3,12 +3,15 @@ from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm, CreateBuyerForm, CreateDealForm
+from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm
 from .model import db, User, Buyer, Deal, Plot, Transaction
 from . import login_manager
 
 from datetime import datetime
 
+add_dict = {"Add Buyer":"/add/buyer", "Add Deal":"/add/deal"}
+display_dict = {"Display All Buyers":"/display/buyers"}
+profile_dict = {"Add":"/add", "Display":"/display", "Map":"/map"}
 
 @app.route("/", methods=['GET'])
 @app.route("/home", methods=['GET'])
@@ -18,7 +21,7 @@ def home():
 
 @app.route("/about", methods=['GET'])
 def about():
-    return render_template('about.html')
+    return render_template('about.html',  User=User)
 
 
 #This function should return the user for the user_id
@@ -58,15 +61,36 @@ def login():
 
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
-def profile():
-    anchor_dict = {"Add Buyer":"/createbuyer", "Add Deal":"/createdeal", "Map":"/map"}
-    return render_template('profile.html', current_user=current_user, anchor_dict=anchor_dict)
+def profile(): 
+    return render_template('profile.html', current_user=current_user, profile_dict=profile_dict)
 
 
 @app.route("/map", methods=['GET'])
 @login_required
 def map():
     return render_template('map.html')
+
+
+@app.route("/add")
+@login_required
+def add():
+    return render_template('add.html', add_dict=add_dict)
+
+
+@app.route("/display")
+@login_required
+def display():
+    return render_template('display.html', display_dict=display_dict)
+
+
+@app.route("/display/buyers")
+@login_required
+def displaybuyers():
+
+    form = SearchBuyerForm()
+
+    buyers = Buyer.query.all()
+    return render_template('displaybuyers.html', buyers=buyers, form=form)
 
 
 @app.route("/plot/<plot_id>")
@@ -81,11 +105,11 @@ def plotinfo(plot_id):
     return render_template('plotinfo.html', plot=plot)
 
 
-@app.route("/createbuyer", methods=['GET', 'POST'])
+@app.route("/add/buyer", methods=['GET', 'POST'])
 @login_required
-def createbuyer():
+def addbuyer():
 
-    form = CreateBuyerForm()
+    form = AddBuyerForm()
     if form.validate_on_submit():        
         try:
             buyer = Buyer(
@@ -107,11 +131,11 @@ def createbuyer():
             
     return render_template('createbuyer.html',  form=form)
 
-@app.route("/createdeal", methods=['GET', 'POST'])
+@app.route("/add/deal", methods=['GET', 'POST'])
 @login_required
-def createdeal():
+def adddeal():
 
-    form = CreateDealForm()
+    form = AddDealForm()
     if form.validate_on_submit():
         #Quering the mentioned plot and buyer returns None is no such pot exists        
         plot = Plot.query.filter_by(id=form.plot_id.data).first()

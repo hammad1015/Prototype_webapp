@@ -10,8 +10,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=1, max=25)])
     submit   = SubmitField('Login')
 
-#Create Buyer Form
-class CreateBuyerForm(FlaskForm):
+#Add Buyer Form
+class AddBuyerForm(FlaskForm):
+
 	#id 	 = IntegerField('Buyer ID', validators=[DataRequired()])
 	name 	 = StringField('Name', validators=[DataRequired(), Length(min=1, max=75)])
 	cnic 	 = IntegerField('CNIC', validators=[DataRequired(), number_range(min=1)])
@@ -19,8 +20,15 @@ class CreateBuyerForm(FlaskForm):
 	submit 	 = SubmitField('Create Buyer')
 
 
-#Create Deal Form 
-class CreateDealForm(FlaskForm):
+#Search Buyer Form
+class SearchBuyerForm(FlaskForm):
+
+	id     = IntegerField('Buyer ID')
+	name   = StringField('Name')
+	search = SubmitField('Search Buyer')
+
+#Add Deal Form 
+class AddDealForm(FlaskForm):
 
 	#id 						= IntegerField('Deal ID', validators=[DataRequired()])
 	buyer_id 				= IntegerField('Buyer ID', validators=[DataRequired()])

@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <!-- Buyer Search Form -->
+    <div class="content-section">
+      <form method="POST" action="{{ url_for('home') }}">
+        <fieldset class="form-group">
+
+          <legend>Search Buyer</legend>
+
+          <div class="form-group">
+            {{ form.id.label }}
+            {% if form.id.errors %}
+              {{ form.id(class='form-control is-invalid') }}
+              <div class="invalid-feedback">
+                {% for error in form.id.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.id(class='form-control') }}
+            {% endif %} 
+          </div>
+
+          <div class="form-group">
+            {{ form.name.label }}
+            {% if form.name.errors %}
+              {{ form.name(class='form-control is-invalid') }}
+              <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.name(class='form-control') }}
+            {% endif %} 
+          </div>
+
+          <div class="form-group">
+            {{ form.search(class='btn btn-sm btn-outline-dark') }}
+          </div>
+
+        </fieldset>
+    </form>
+  </div>
+
+  {% for buyer in buyers %}
+    <div class="row pl-5">
+      
+	  <legend>
+        <strong>Buyer ID {{buyer.id}}:</strong>
+      </legend>
+
+      <p>
+        Buyer Name: {{ buyer.name }}</br>
+        Buyer CNIC: {{ buyer.cnic }}</br>
+        {% if buyer.comments %}
+          Comments: {{ buyer.comments }}</br>
+        {% endif %}
+        {% if buyer.deals[0] %}
+          Buyer's Deals:
+          {% for deal in buyer.deals %}
+            {{ deal.id }}
+          {% endfor %}
+          <br>
+        {% endif %}
+      </p>
+    </div>
+        
+    <div class="row pl-5 pb-4 border-bottom border-secondary"> 
+       
+        <button class="btn btn-outline-danger btn-sm" action="/home">Delete Buyer</button>
+        <button class="btn btn-outline-secondary btn-sm  ml-2" action="/home">Edit Buyer Info</button>
+    </div>
+    <br><br>
+        
+    {% endfor %}
+
+{% endblock %}

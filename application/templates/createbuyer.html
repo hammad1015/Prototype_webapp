@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="content-section">
-    <form method="POST" action="/createbuyer">
+    <form method="POST" action="{{ url_for('addbuyer') }}">
 	  <fieldset class="form-group">
 
 		{{ form.csrf_token }}
