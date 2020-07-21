@@ -10,9 +10,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False) 
     #is_admin = db.Column(db.String(50), default=False)
 
+    #Relationships:
+    notes = db.relationship("Notes", backref="user_object", lazy=True)
+
     #A method used to check password during login 
-    def check_password(self, password1):
-    	
+    def check_password(self, password1):    	
         return password1 == self.password
 
     #A method that returns the Primary key, This in used in the "load_user" function in routes.spy
@@ -101,6 +103,19 @@ class Transaction(db.Model):
     #ForeginKey Columns:
     deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=False)
     #expense_id = Foreginkey reference to Expense table
+
+
+class Notes(db.Model):
+    __tablename__ = 'notes'
+
+    #Attribute Columns:
+    id        = db.Column(db.Integer, primary_key=True)
+    title     = db.Column(db.String(50), nullable=False, default='Title')
+    content    = db.Column(db.Text, nullable=True, default=None)
+    date_time = db.Column(db.DateTime, nullable=False)
+
+    #ForeginKey Columns:
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
     
 

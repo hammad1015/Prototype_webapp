@@ -10,4 +10,12 @@
     	</ul>
     {% endfor %}
 
+    <h3>Notes:</h3>
+    {% for note in user_notes %}
+    	<ul>
+    		<legend>{{ note.title }}</legend>
+    		<p>{{ note.content }}</p>
+    	</ul>
+    {% endfor %}
+
 {% endblock %}

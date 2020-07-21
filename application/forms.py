@@ -39,4 +39,11 @@ class AddDealForm(FlaskForm):
 	comments 				= TextAreaField('Comments', validators=[])
 	submit 					= SubmitField('Create Deal')
 
+#Add Notes Form
+class AddNotesForm(FlaskForm):
+
+	title   = StringField('Title',  validators=[DataRequired()])
+	content = TextAreaField('Content')
+	add 	= SubmitField('Add Note') 
+
 

@@ -3,13 +3,13 @@ from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm
-from .model import db, User, Buyer, Deal, Plot, Transaction
+from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, AddNotesForm
+from .model import db, User, Buyer, Deal, Plot, Transaction, Notes
 from . import login_manager
 
 from datetime import datetime
 
-add_dict = {"Add Buyer":"/add/buyer", "Add Deal":"/add/deal"}
+add_dict     = {"Add Buyer":"/add/buyer", "Add Deal":"/add/deal", "Add Notes":"/add/notes"}
 display_dict = {"Display All Buyers":"/display/buyers"}
 profile_dict = {"Add":"/add", "Display":"/display", "Map":"/map"}
 
@@ -62,7 +62,8 @@ def login():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile(): 
-    return render_template('profile.html', current_user=current_user, profile_dict=profile_dict)
+    user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc())
+    return render_template('profile.html', current_user=current_user, profile_dict=profile_dict, user_notes=user_notes)
 
 
 @app.route("/map", methods=['GET'])
@@ -196,6 +197,28 @@ def adddeal():
         return redirect(url_for('profile'))
 
     return render_template('createdeal.html', form=form)
+
+@app.route("/add/notes", methods=['GET', 'POST'])
+@login_required
+def addnotes():
+
+    form = AddNotesForm()
+    if form.validate_on_submit():
+        note = Notes(
+            title = form.title.data,
+            content = form.content.data if form.content.data else db.null(),
+            date_time = datetime.now(),
+            user_id = current_user.id
+        )
+
+        db.session.add(note)
+        db.session.commit()
+
+        flash(f'Note Added!', 'success')
+        return redirect(url_for('profile'))
+
+
+    return render_template('addnotes.html', form=form)
 
 
 @app.route("/logout", methods=['GET'])
