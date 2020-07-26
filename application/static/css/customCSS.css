@@ -1,0 +1,8 @@
+.noteLink{
+	color: #373737;
+}
+.noteLink:hover{
+	color: #1FB0E2;
+	text-decoration: none;
+	transition-duration: 1;
+}

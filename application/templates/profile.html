@@ -10,12 +10,21 @@
     	</ul>
     {% endfor %}
 
-    <h3>Notes:</h3>
-    {% for note in user_notes %}
-    	<ul>
-    		<legend>{{ note.title }}</legend>
-    		<p>{{ note.content }}</p>
-    	</ul>
+    <h3 data-aos="slide-right" data-aos-once="true">Notes:</h3>
+    {% for i in range(4) %}
+      {% if user_notes[i] %}
+   		 <div data-aos="fade-right" data-aos-delay="{{ 100*(i+1) }}" data-aos-once="true"> 
+   		   <ul>	   	            
+            <h5>
+              <a href="{{ url_for('noteinfo', note_id=user_notes[i].id) }}"
+                 class="noteLink">{{ user_notes[i].title }}</a>
+            </h5>  
+    	  </ul>
+        </div>
+       {% endif %}
     {% endfor %}
+ 
+ 	<br>
+    <ul><a href="{{ url_for('allnotes') }}"><span>See All Notes</span></a></ul>
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, flash, request, session, url_for
+from flask import Blueprint, redirect, render_template, flash, request, session, url_for, abort
 from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
@@ -62,8 +62,30 @@ def login():
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile(): 
-    user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc())
+    user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc()).limit(4)
     return render_template('profile.html', current_user=current_user, profile_dict=profile_dict, user_notes=user_notes)
+
+@app.route("/notes/<note_id>", methods=['GET'])
+@login_required
+def noteinfo(note_id):
+    note = Notes.query.filter_by(id=note_id).first()
+
+    if note is None:
+        flash(f'No such note exists!', 'danger')
+        return redirect(url_for("profile"))
+
+    if note.user_id != current_user.id:
+        abort(403)
+
+    return render_template("noteinfo.html", note=note)
+
+
+@app.route("/notes/all", methods=['GET'])
+@login_required
+def allnotes():
+    notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc())
+    return render_template('allnotes.html', notes=notes)
+
 
 
 @app.route("/map", methods=['GET'])

@@ -2,14 +2,14 @@
 
 {% block content %}
 
- <img id="plan1" src = "static/PLAN-1.PNG" width="850px" height="1300px" align="middle" usemap="#map"/>  
+ <img id="plan1" src = "static/img/PLAN-1.PNG" width="850px" height="1300px" align="middle" usemap="#map"/>  
 
  	<map name="map">
  		{% for i in range(438, 678, 34) %}
 
         	<area shape = "rect" 
             	  coords = "{{i}},1070,{{i+34}},1135"            
-            	  href = /plot/{{((i-438)//34)+1}}
+            	  href = "{{ url_for('plotinfo', plot_id=((i-438)//34)+1) }}"
                   name = {{((i-438)//34)+1}}
             	  target = "_blank"
          	/>

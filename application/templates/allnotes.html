@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+  <h1>Your Notes:</h1>
+  <ol>
+  {% for note in notes %} 
+    <li>
+	  <h5>
+     <a href="{{ url_for('noteinfo', note_id=note.id) }}"
+        class="noteLink">{{ note.title }}</a>
+    </h5>
+    </li>
+        
+    {% endfor %}
+    <ol>
+
+{% endblock %}

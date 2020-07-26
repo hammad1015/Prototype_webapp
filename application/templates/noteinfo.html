@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+	<h1>Your Note:</h1>
+    <legend>{{ note.title }}</legend>
+    <p>{{ note.content}}</p>
+
+    <button class="btn btn-outline-danger btn-sm" action="/home">Delete Note</button>
+    <button class="btn btn-outline-secondary btn-sm  ml-2" action="/home">Edit Note</button>
+
+
+{% endblock %}
