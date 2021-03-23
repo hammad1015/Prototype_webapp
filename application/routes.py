@@ -249,3 +249,8 @@ def logout():
     logout_user()
     flash('User logged out', 'info')
     return redirect(url_for('home'))
+
+
+@app.route("/test")
+def test():
+    return url_for('test.html')
