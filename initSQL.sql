@@ -9,3 +9,5 @@ INSERT INTO plot VALUES (2, "second", 100000, "2 marla",  "not sold", "nothing")
 INSERT INTO plot VALUES (3, "third", 300000, "5 marla",  "not sold", "nothing");
 INSERT INTO plot VALUES (4, "fourth", 500000, "5 marla",  "not sold", "nothing");
 INSERT INTO plot VALUES (5, "fifth", 2000000, "7 marla",  "not sold", "nothing");
+
+-- This is a test comment
