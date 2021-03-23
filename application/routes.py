@@ -253,4 +253,4 @@ def logout():
 
 @app.route("/test")
 def test():
-    return url_for('test.html')
+    return render_template('test.html')
