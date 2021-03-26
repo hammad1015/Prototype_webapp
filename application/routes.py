@@ -49,10 +49,7 @@ def login():
     form = LoginForm()
     # Validate login attempt
     if form.validate_on_submit():
-        print(form.email.data)
-        print(User.query.all()[2].email)
         user = User.query.filter_by(email=form.email.data).first()
-        print(user)
         if user and user.check_password(password1=form.password.data):
             login_user(user)
             flash(f'Welcome {user.username}', 'success')
