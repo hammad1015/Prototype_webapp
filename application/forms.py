@@ -3,11 +3,13 @@ from flask import Markup
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Length, number_range
 
+from .model import db
+
 #Login Form 
 class LoginForm(FlaskForm):
 	
-    email    = StringField('Email', validators=[DataRequired(), Length(min=1, max=25)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=1, max=25)])
+    email    = StringField('Email', validators=[DataRequired(), Length(min=1, max=75)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=1, max=100)])
     submit   = SubmitField('Login')
 
 #Add Buyer Form
@@ -45,5 +47,14 @@ class AddNotesForm(FlaskForm):
 	title   = StringField('Title',  validators=[DataRequired()])
 	content = TextAreaField('Content')
 	add 	= SubmitField('Add Note') 
+
+#Add Buyer Form
+class AddNormalUserForm(FlaskForm):
+
+	#id 	 = IntegerField('Buyer ID', validators=[DataRequired()])
+	username = StringField('Username',   validators=[DataRequired(), Length(min=1, max=50)])
+	email    = StringField('Email',      validators=[DataRequired(), Length(min=1, max=75)])
+	password = PasswordField('Password', validators=[Length(max=100)], default='12345')
+	create 	 = SubmitField('Create User')
 
 

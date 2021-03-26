@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div class="content-section">
+    <form method="POST" action="{{ url_for('addnormaluser') }}">
+	  <fieldset class="form-group">
+
+		{{ form.csrf_token }}
+        <legend>Add Normal User</legend>
+
+		  <div class="form-group">
+        	{{ form.username.label }}
+        	{% if form.username.errors %}
+        	  {{ form.username(class='form-control is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.username(class='form-control') }}
+            {% endif %}
+ 
+      	  </div>
+	      
+		  <div class="form-group">
+        	{{ form.email.label }}
+     	
+        	{% if form.email.errors %}
+        	  {{ form.email(class='form-control is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.email(class='form-control') }}
+            {% endif %}
+ 
+      	  </div>
+
+		  <div class="form-group">
+        	{{ form.password.label }}
+     	
+        	{% if form.password.errors %}
+        	  {{ form.password(class='form-control is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+              {{ form.password(placeholder='Leave empty for default password (12345)', class='form-control') }}
+            {% endif %}
+ 
+      	  </div>
+
+	      <div class="form-group">
+	        {{ form.create(class='btn btn-outline-dark') }}
+	      </div>
+
+	  </fieldset>
+	</form>
+  </div>
+
+
+{% endblock %}

@@ -3,23 +3,26 @@ from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, AddNotesForm
+from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, AddNotesForm, AddNormalUserForm
 from .model import db, User, Buyer, Deal, Plot, Transaction, Notes
+from .middleware import Middleware
 from . import login_manager
 
 from datetime import datetime
 
-add_dict     = {"Add Buyer":"/add/buyer", "Add Deal":"/add/deal", "Add Notes":"/add/notes"}
+#add_dict     = {"Add Buyer":"/add/buyer", "Add Normal User":"/add/normaluser", "Add Deal":"/add/deal", "Add Notes":"/add/notes"}
 display_dict = {"Display All Buyers":"/display/buyers"}
 profile_dict = {"Add":"/add", "Display":"/display", "Map":"/map"}
+GET          = "GET"
+POST         = "POST"
 
-@app.route("/", methods=['GET'])
-@app.route("/home", methods=['GET'])
+@app.route("/", methods=[GET])
+@app.route("/home", methods=[GET])
 def home():
     return render_template('home.html')
 
 
-@app.route("/about", methods=['GET'])
+@app.route("/about", methods=[GET])
 def about():
     return render_template('about.html',  User=User)
 
@@ -37,7 +40,7 @@ def unauthorized():
     return redirect(url_for('login'))
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=[GET, POST])
 def login():
     if current_user.is_authenticated:
         flash('You are already logged in', 'info')
@@ -46,8 +49,10 @@ def login():
     form = LoginForm()
     # Validate login attempt
     if form.validate_on_submit():
+        print(form.email.data)
+        print(User.query.all()[2].email)
         user = User.query.filter_by(email=form.email.data).first()
-
+        print(user)
         if user and user.check_password(password1=form.password.data):
             login_user(user)
             flash(f'Welcome {user.username}', 'success')
@@ -59,13 +64,13 @@ def login():
     return render_template('loginpage.html', form=form)
 
 
-@app.route("/profile", methods=['GET', 'POST'])
+@app.route("/profile", methods=[GET, POST])
 @login_required
 def profile(): 
     user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc()).limit(4)
     return render_template('profile.html', current_user=current_user, profile_dict=profile_dict, user_notes=user_notes)
 
-@app.route("/notes/<note_id>", methods=['GET'])
+@app.route("/notes/<note_id>", methods=[GET])
 @login_required
 def noteinfo(note_id):
     note = Notes.query.filter_by(id=note_id).first()
@@ -80,7 +85,7 @@ def noteinfo(note_id):
     return render_template("noteinfo.html", note=note)
 
 
-@app.route("/notes/all", methods=['GET'])
+@app.route("/notes/all", methods=[GET])
 @login_required
 def allnotes():
     notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc())
@@ -88,7 +93,7 @@ def allnotes():
 
 
 
-@app.route("/map", methods=['GET'])
+@app.route("/map", methods=[GET])
 @login_required
 def map():
     return render_template('map.html')
@@ -97,7 +102,7 @@ def map():
 @app.route("/add")
 @login_required
 def add():
-    return render_template('add.html', add_dict=add_dict)
+    return render_template('add.html')
 
 
 @app.route("/display")
@@ -128,7 +133,7 @@ def plotinfo(plot_id):
     return render_template('plotinfo.html', plot=plot)
 
 
-@app.route("/add/buyer", methods=['GET', 'POST'])
+@app.route("/add/buyer", methods=[GET, POST])
 @login_required
 def addbuyer():
 
@@ -150,34 +155,34 @@ def addbuyer():
 
         except sqlalchemy.exc.IntegrityError:
             flash("ERROR: A buyer with this CNIC already exists!", "danger")
-            return render_template('createbuyer.html', form=form)         
+            return render_template('addbuyer.html', form=form)         
             
-    return render_template('createbuyer.html',  form=form)
+    return render_template('addbuyer.html',  form=form)
 
-@app.route("/add/deal", methods=['GET', 'POST'])
+@app.route("/add/deal", methods=[GET, POST])
 @login_required
 def adddeal():
 
     form = AddDealForm()
     if form.validate_on_submit():
         #Quering the mentioned plot and buyer returns None is no such pot exists        
-        plot = Plot.query.filter_by(id=form.plot_id.data).first()
+        plot  = Plot.query.filter_by(id=form.plot_id.data).first()
         buyer = Buyer.query.filter_by(id=form.buyer_id.data).first()
 
         ##Applying validity checks
         if plot is None:       
             flash(f"No plot exists with Plot ID: {form.plot_id.data}",  "danger")
-            return render_template('createdeal.html', form=form)
+            return render_template('adddeal.html', form=form)
 
         if buyer is None:
             flash(f"No buyer exists with Buyer ID: {form.buyer_id.data}")
-            return render_template('createdeal.html', form=form)
+            return render_template('adddeal.html', form=form)
 
         if plot.deal is not None:        
             flash(f"The Plot with ID {plot.id} cannot be sold")
             flash(f"Plot Status: {plot.status}")
             flash(f"Plot's Deal ID: {plot.deal.id}")
-            return render_template('createdeal.html', form=form)
+            return render_template('adddeal.html', form=form)
 
 
         ##UPDATING CORESPONDING PLOT STATUS
@@ -202,7 +207,7 @@ def adddeal():
 
         except sqlalchemy.exc.IntegrityError:
             flash("ERROR: A deal with this ID already exists!")
-            return render_template('createdeal.html', form=form)
+            return render_template('adddeal.html', form=form)
 
         
         #Creating corresponding transaction
@@ -218,9 +223,9 @@ def adddeal():
         flash(f"Deal with ID {deal.id} successfully created!")
         return redirect(url_for('profile'))
 
-    return render_template('createdeal.html', form=form)
+    return render_template('adddeal.html', form=form)
 
-@app.route("/add/notes", methods=['GET', 'POST'])
+@app.route("/add/notes", methods=[GET, POST])
 @login_required
 def addnotes():
 
@@ -242,8 +247,39 @@ def addnotes():
 
     return render_template('addnotes.html', form=form)
 
+@app.route("/add/normaluser", methods=[GET, POST])
+@login_required
+def addnormaluser():
 
-@app.route("/logout", methods=['GET'])
+    #Checking Authorization
+    Middleware.authorize(current_user)
+    
+    form = AddNormalUserForm()
+    if form.validate_on_submit():
+       
+        #Adding user to the Dataase
+        try:
+            user = User(
+                username = form.username.data,
+                email    = form.email.data, 
+                password = form.password.data or form.password.default,
+                rank     = 1
+            )
+            db.session.add(user)
+            db.session.commit()
+
+        except sqlalchemy.exc.IntegrityError as ie:
+            flash("User with emil already exists", 'danger')
+            return render_template('addnormaluser.html', form=form)
+
+        
+        flash(f'Normal User Creatdd!', 'success')
+        return redirect(url_for('profile'))
+    
+    return render_template('addnormaluser.html', form=form)
+
+
+@app.route("/logout", methods=[GET])
 @login_required
 def logout():
     logout_user()

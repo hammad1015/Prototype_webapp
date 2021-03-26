@@ -1,10 +1,12 @@
 show databases;
-CREATE DATABASE build_guild;
+create database build_guild;
 USE build_guild;
+SHOW TABLES;
 
 -- Insert SQL
-INSERT INTO user VALUES (1, "faisal@example.com", "Faisal Rasool", "pop");
-INSERT INTO user VALUES (2, "rafey@example.com", "Abdul Rafey", "pop");
+INSERT INTO user VALUES (1, "faisal@example.com", "Faisal Rasool", "pop" , 0);
+INSERT INTO user VALUES (2, "rafey@example.com", "Abdul Rafey", "pop", 0);
+INSERT INTO user VALUES (3, "munshi@example.com", "Manager 1", "pop", 1);
 
 INSERT INTO buyer VALUES (1, "Hadi Ali", 12345,  null);
 INSERT INTO buyer VALUES (2, "Haider Ali", 12346,  null);
@@ -17,3 +19,16 @@ INSERT INTO plot VALUES (5, "fifth", 2000000, "7 marla",  "not sold", "nothing")
 
 -- Deleting SQL
 DELETE FROM user WHERE id=2;
+
+-- Droping Tables
+DROP TABLE transaction;
+DROP TABLE deal;
+DROP TABLE notes;
+DROP TABLE commissionagent;
+DROP TABLE buyer;
+DROP TABLE plot;
+DROP TABLE user;
+
+
+-- Selecting
+SELECT * FROM user;

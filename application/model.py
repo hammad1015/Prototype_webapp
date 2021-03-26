@@ -4,11 +4,11 @@ from . import db
 
 class User(db.Model, UserMixin):
     #Attribute Columns
-    id       = db.Column(db.Integer, primary_key=True) 
-    email    = db.Column(db.String(75), unique=True) 
-    username = db.Column(db.String(50), nullable=False) 
+    id       = db.Column(db.Integer,     primary_key=True) 
+    email    = db.Column(db.String(75),  unique=True) 
+    username = db.Column(db.String(50),  nullable=False) 
     password = db.Column(db.String(100), nullable=False) 
-    #is_admin = db.Column(db.String(50), default=False)
+    rank     = db.Column(db.Integer,     nullable=False)
 
     #Relationships:
     notes = db.relationship("Notes", backref="user_object", lazy=True)
@@ -25,8 +25,8 @@ class User(db.Model, UserMixin):
     #A method that prints the reffered user instance
     def __repr__(self):
         #return self
-    	return f'"<User {self.id}>"'         #"<User {}>".format(self.id)
-    	#return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
+    	#return f'"<User {self.id}>"'         #"<User {}>".format(self.id)
+    	return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
 
 class Buyer(db.Model):
     __tablename__ = 'buyer'
