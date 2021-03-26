@@ -27,7 +27,7 @@ def create_app():
 
         #Creating tables in the database
         #db.drop_all()
-        db.create_all()
+        #db.create_all()
 
         #print(app.config)
 
