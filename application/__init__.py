@@ -26,8 +26,8 @@ def create_app():
         from . import routes
 
         #Creating tables in the database
-        #db.drop_all()
-        #db.create_all()
+        db.drop_all()
+        db.create_all()
 
         #print(app.config)
 
