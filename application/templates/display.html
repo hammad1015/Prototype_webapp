@@ -3,11 +3,10 @@
 {% block content %}	
 
     <h1>Username: {{current_user.username}}</h1></br>
-
-    {% for label, route in display_dict.items() %}
-    	<ul>
-    		<a href={{ route }}>{{ label }}</a>
-    	</ul>
-    {% endfor %}
+    
+	<ul>
+		<a href="{{ url_for('displaybuyers') }}">Display All buyers</a>
+	</ul>
+    
 
 {% endblock %}

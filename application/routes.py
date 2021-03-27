@@ -6,15 +6,17 @@ from flask_sqlalchemy import sqlalchemy
 from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, AddNotesForm, AddNormalUserForm
 from .model import db, User, Buyer, Deal, Plot, Transaction, Notes
 from .middleware import Middleware
+from .adminindexview import AdminPanel
 from . import login_manager
+from . import admin
 
 from datetime import datetime
 
-#add_dict     = {"Add Buyer":"/add/buyer", "Add Normal User":"/add/normaluser", "Add Deal":"/add/deal", "Add Notes":"/add/notes"}
-display_dict = {"Display All Buyers":"/display/buyers"}
-profile_dict = {"Add":"/add", "Display":"/display", "Map":"/map"}
+
+#Setting utility variables
 GET          = "GET"
 POST         = "POST"
+
 
 @app.route("/", methods=[GET])
 @app.route("/home", methods=[GET])
@@ -46,6 +48,8 @@ def login():
         flash('You are already logged in', 'info')
         return redirect(url_for('profile'))  
 
+    #Middleware.authorizeGuest(current_user)
+
     form = LoginForm()
     # Validate login attempt
     if form.validate_on_submit():
@@ -65,7 +69,7 @@ def login():
 @login_required
 def profile(): 
     user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc()).limit(4)
-    return render_template('profile.html', current_user=current_user, profile_dict=profile_dict, user_notes=user_notes)
+    return render_template('profile.html', current_user=current_user, user_notes=user_notes)
 
 @app.route("/notes/<note_id>", methods=[GET])
 @login_required
@@ -105,7 +109,7 @@ def add():
 @app.route("/display")
 @login_required
 def display():
-    return render_template('display.html', display_dict=display_dict)
+    return render_template('display.html')
 
 
 @app.route("/display/buyers")
@@ -249,7 +253,7 @@ def addnotes():
 def addnormaluser():
 
     #Checking Authorization
-    Middleware.authorize(current_user)
+    Middleware.authorizeSuperUser(current_user)
     
     form = AddNormalUserForm()
     if form.validate_on_submit():
@@ -270,7 +274,7 @@ def addnormaluser():
             return render_template('addnormaluser.html', form=form)
 
         
-        flash(f'Normal User Creatdd!', 'success')
+        flash(f'Normal User Created!', 'success')
         return redirect(url_for('profile'))
     
     return render_template('addnormaluser.html', form=form)

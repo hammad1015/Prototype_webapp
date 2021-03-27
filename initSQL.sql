@@ -6,7 +6,7 @@ SHOW TABLES;
 -- Insert SQL
 INSERT INTO user VALUES (1, "faisal@example.com", "Faisal Rasool", "pop" , 0);
 INSERT INTO user VALUES (2, "rafey@example.com", "Abdul Rafey", "pop", 0);
-INSERT INTO user VALUES (3, "munshi@example.com", "Manager 1", "pop", 1);
+INSERT INTO user VALUES (3, "manager@example.com", "Manager 1", "pop", 1);
 
 INSERT INTO buyer VALUES (1, "Hadi Ali", 12345,  null);
 INSERT INTO buyer VALUES (2, "Haider Ali", 12346,  null);
