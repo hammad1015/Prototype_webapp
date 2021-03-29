@@ -3,11 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_admin import Admin
 
-from flask_admin.contrib.sqla import ModelView
 from flask_admin.base import MenuLink
 
-from .adminindexview import AdminPanel
-#from .model import User, Buyer, Deal, Plot, Transaction, Notes
+from .adminviews import AdminPanel, ProtectedModelView
+
 
 db            = SQLAlchemy()
 login_manager = LoginManager()
@@ -33,12 +32,12 @@ def create_app():
         from . import routes
 
         #Addning Databse tables to Admin Panel
-        admin.add_view(ModelView(model.User,  db.session, category='Databases', name="Users"))
-        admin.add_view(ModelView(model.Buyer, db.session, category='Databases', name="Buyers"))
-        admin.add_view(ModelView(model.Deal,  db.session, category='Databases', name="Deals"))
-        admin.add_view(ModelView(model.Plot,  db.session, category='Databases', name="Plots"))
-        admin.add_view(ModelView(model.Notes, db.session, category='Databases', name="Notes"))
-        admin.add_view(ModelView(model.Transaction, db.session, category='Databases', name="Transactions"))
+        admin.add_view(ProtectedModelView(model.User,  db.session, category='Databases', name="Users"))
+        admin.add_view(ProtectedModelView(model.Buyer, db.session, category='Databases', name="Buyers"))
+        admin.add_view(ProtectedModelView(model.Deal,  db.session, category='Databases', name="Deals"))
+        admin.add_view(ProtectedModelView(model.Plot,  db.session, category='Databases', name="Plots"))
+        admin.add_view(ProtectedModelView(model.Notes, db.session, category='Databases', name="Notes"))
+        admin.add_view(ProtectedModelView(model.Transaction, db.session, category='Databases', name="Transactions"))
         admin.add_link(MenuLink(name='Back to Profile', url='/profile'))
 
         #Creating tables in the database
