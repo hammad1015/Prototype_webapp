@@ -8,8 +8,14 @@ from .middleware import Middleware
 
 class AdminPanel(AdminIndexView):
 
+	#Overriding Parent method
 	@expose('/')
 	def index(self):
+		"""
+		Method that Authenticates and Authorizes Super User and Renders the Admin Panel,
+		Upon Authentication faiure, Redirects to login page
+		Upon Authorization failure returns code 403 (forbidden reurest) 
+		"""
 		if current_user.is_authenticated:
 
 			#Checking Authorization

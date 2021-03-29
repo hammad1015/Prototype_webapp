@@ -12,9 +12,9 @@ class Middleware:
 
 		if user.rank: return abort(403)
 
-	@classmethod
-	def authorizeGuest(cls, user):
+	# @classmethod
+	# def authorizeGuest(cls, user):
 
-		if user.is_authenticated:
-			flash("acc")
-			return redirect(url_for('.profile'))
+	# 	if user.is_authenticated:
+	# 		flash("acc")
+	# 		return redirect(url_for('.profile'))

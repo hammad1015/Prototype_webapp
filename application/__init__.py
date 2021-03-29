@@ -10,7 +10,7 @@ from .adminviews import AdminPanel, ProtectedModelView
 
 db            = SQLAlchemy()
 login_manager = LoginManager()
-admin  = Admin()
+admin         = Admin()
 
 def create_app():
     """ Creating the Flask app and setting its config """
@@ -31,7 +31,7 @@ def create_app():
         #Incuding Routes
         from . import routes
 
-        #Addning Databse tables to Admin Panel
+        #Addning Databse Viewss to Admin Panel
         admin.add_view(ProtectedModelView(model.User,  db.session, category='Databases', name="Users"))
         admin.add_view(ProtectedModelView(model.Buyer, db.session, category='Databases', name="Buyers"))
         admin.add_view(ProtectedModelView(model.Deal,  db.session, category='Databases', name="Deals"))
