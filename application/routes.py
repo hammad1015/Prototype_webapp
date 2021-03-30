@@ -3,7 +3,7 @@ from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, AddNotesForm, AddNormalUserForm
+from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm
 from .model import db, User, Buyer, Deal, Plot, Transaction, Notes
 from .middleware import Middleware
 from . import login_manager
@@ -70,6 +70,7 @@ def profile():
     user_notes = Notes.query.filter_by(user_id=current_user.id).order_by(Notes.date_time.desc()).limit(4)
     return render_template('profile.html', current_user=current_user, user_notes=user_notes)
 
+
 @app.route("/notes/<note_id>", methods=[GET])
 @login_required
 def noteinfo(note_id):
@@ -116,9 +117,58 @@ def display():
 def displaybuyers():
 
     form = SearchBuyerForm()
+    delete_form = DeleteBuyerForm()
 
     buyers = Buyer.query.all()
-    return render_template('displaybuyers.html', buyers=buyers, form=form)
+    return render_template('displaybuyers.html', buyers=buyers, form=form, delete_form=delete_form)
+
+
+@app.route("/delete/buyers/<buyer_id>", methods=[POST, GET])
+@login_required
+def deletebuyer(buyer_id):
+
+    buyer = Buyer.query.filter_by(id=buyer_id).first()
+
+    db.session.delete(buyer)
+    db.session.commit()
+
+    flash('Buyer Record Deleted!', 'danger')
+    return redirect(url_for('displaybuyers'))
+
+
+@app.route("/edit/buyer/<buyer_id>", methods=[POST, GET])
+@login_required
+def editbuyer(buyer_id):
+    
+    form  = EditBuyerForm()
+    buyer = Buyer.query.filter_by(id=buyer_id).first()
+
+    if form.validate_on_submit():
+
+        try:
+            name     = form.name.data
+            cnic     = form.cnic.data
+            comments = form.comments.data
+
+            db.session.query(Buyer).filter_by(
+                                id=buyer_id
+                                ).update({ 
+                                    'name':name,
+                                    'cnic':cnic,
+                                    'comments':comments
+            })
+
+            db.session.commit()
+            flash(f"Buyer Info with id '{buyer.id}' Updated", 'success')
+            return redirect(url_for('displaybuyers'))
+
+        except sqlalchemy.exc.IntegrityError:
+            flash("ERROR: A buyer with this CNIC already exists!", "danger")
+            return render_template('editbuyer.html', form=form, buyer=buyer)   
+
+    else:
+        form.comments.data = buyer.comments
+        return render_template('editbuyer.html', form=form, buyer=buyer)
 
 
 @app.route("/plot/<plot_id>")

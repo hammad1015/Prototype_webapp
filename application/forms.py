@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask import Markup
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, Length, number_range
 
 from .model import db
@@ -22,12 +22,27 @@ class AddBuyerForm(FlaskForm):
 	submit 	 = SubmitField('Create Buyer')
 
 
+#Edit Buyer Info Form
+class EditBuyerForm(FlaskForm):
+	name 	 = StringField('Name', validators=[DataRequired(), Length(min=1, max=75)])
+	cnic 	 = IntegerField('CNIC', validators=[DataRequired(), number_range(min=1)])
+	comments = TextAreaField('Comments', validators=[])
+	submit 	 = SubmitField('Edit Buyer')
+
+	
 #Search Buyer Form
 class SearchBuyerForm(FlaskForm):
 
 	id     = IntegerField('Buyer ID')
 	name   = StringField('Name')
 	search = SubmitField('Search Buyer')
+
+
+#Delete Buyer Form
+class DeleteBuyerForm(FlaskForm):
+
+	id = HiddenField('buyer_id')
+	delete = SubmitField('Delete Buyer')
 
 #Add Deal Form 
 class AddDealForm(FlaskForm):
