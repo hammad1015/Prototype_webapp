@@ -127,6 +127,9 @@ def displaybuyers():
 @login_required
 def deletebuyer(buyer_id):
 
+    #Checking Authorization
+    Middleware.authorizeSuperUser(current_user)
+
     buyer = Buyer.query.filter_by(id=buyer_id).first()
 
     db.session.delete(buyer)
