@@ -1,1 +1,3 @@
 /aplication/static/ssl/.pem
+.vscode
+__pycache__
