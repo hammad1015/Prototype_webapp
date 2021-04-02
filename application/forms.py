@@ -75,8 +75,8 @@ class AddNormalUserForm(FlaskForm):
 #Set Plot Price Form
 class SetPlotPrice(FlaskForm):
 
-	addresses  = [1, 2, 3]#[i[0] for i in Plot.query.with_entities(Plot.address).all()]
-	#print([i[0] for i in addresses])
+	addresses  = [i[0] for i in Plot.query.with_entities(Plot.address).all()]
+	
 	address = SelectField('Address', choices=addresses)
 	price   = IntegerField('Price', validators=[DataRequired()])
 	set     = SubmitField('Set Price')
