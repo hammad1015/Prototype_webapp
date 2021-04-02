@@ -132,6 +132,10 @@ def deletebuyer(buyer_id):
 
     buyer = Buyer.query.filter_by(id=buyer_id).first()
 
+    if buyer is None:
+        flash(f'No such buyer exists!', 'danger')
+        return redirect(url_for("displaybuyers"))
+
     db.session.delete(buyer)
     db.session.commit()
 
@@ -145,6 +149,10 @@ def editbuyer(buyer_id):
     
     form  = EditBuyerForm()
     buyer = Buyer.query.filter_by(id=buyer_id).first()
+
+    if buyer is None:
+        flash(f'No such buyer exists!', 'danger')
+        return redirect(url_for("displaybuyers"))
 
     if form.validate_on_submit():
 
@@ -165,7 +173,7 @@ def editbuyer(buyer_id):
             flash(f"Buyer Info with id '{buyer.id}' Updated", 'success')
             return redirect(url_for('displaybuyers'))
 
-        except sqlalchemy.exc.IntegrityError:
+        except sqlalchemy.orm.exc.NoResultFound:
             flash("ERROR: A buyer with this CNIC already exists!", "danger")
             return render_template('editbuyer.html', form=form, buyer=buyer)   
 
