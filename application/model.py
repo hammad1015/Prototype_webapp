@@ -60,7 +60,7 @@ class Plot(db.Model):
     #Attribute Columns:
     id       = db.Column(db.Integer,     primary_key=True)
     type     = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100),  nullable=False)
     status   = db.Column(db.String(20),  nullable=False)
     price    = db.Column(db.Integer,     nullable=True)
     size     = db.Column(db.String(20),  nullable=False)    
