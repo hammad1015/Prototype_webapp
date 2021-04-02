@@ -62,9 +62,7 @@ def create_app():
         # db.session.add(model.Plot(id=14, type="commercial", address="fourteen", status="not sold", size="5"))
         # db.session.add(model.Plot(id=15, type="commercial", address="fifteen",  status="not sold", size="5"))
         # db.session.add(model.Plot(id=16, type="commercial", address="sixteen",  status="not sold", size="5"))
-
-
-        db.session.commit()
+        # db.session.commit()
 
         #print(app.config)
 
