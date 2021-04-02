@@ -58,12 +58,13 @@ class Plot(db.Model):
     __tablename__ = 'plot'
 
     #Attribute Columns:
-    id       = db.Column(db.Integer, primary_key=True)
-    adddress = db.Column(db.String(100), nullable=False)
-    price    = db.Column(db.Integer, nullable=False)
-    size     = db.Column(db.String(20), nullable=False)
-    status   = db.Column(db.String(20), nullable=False)
-    comments = db.Column(db.Text, nullable=True, default=None)
+    id       = db.Column(db.Integer,     primary_key=True)
+    type     = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
+    status   = db.Column(db.String(20),  nullable=False)
+    price    = db.Column(db.Integer,     nullable=True)
+    size     = db.Column(db.String(20),  nullable=False)    
+    comments = db.Column(db.Text,        nullable=True, default=None)
 
     #Relationships:
     #This attribute would return the deal obect this plot is associated to

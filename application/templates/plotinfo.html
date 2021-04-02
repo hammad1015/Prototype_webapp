@@ -5,13 +5,29 @@
 	<h1>Plot Info:</h1>
     <p>
     Plot ID: {{ plot.id }}</br>
-    Plot Address: {{ plot.adddress }}</br>
-    Plot Price: {{ plot.price }}</br>
+    Plot Address: {{ plot.address }}</br>
+
+    {% if not plot.price %}
+      Plot Price: <span style="color: red;">Not Set</span> 
+      &nbsp&nbsp&nbsp&nbsp&nbsp 
+      {% if not current_user.rank %}
+        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
+      {% endif %}
+    {% else %}
+      Plot Price: {{ plot.price }}
+      &nbsp&nbsp&nbsp&nbsp&nbsp
+      {% if not current_user.rank %}
+        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
+      {% endif %}
+    {% endif %}</br>    
+
     Plot Size: {{ plot.size }}</br>
     Status: {{ plot.status }}</br>
+
     {% if plot.comments %}
       Comments: {{ plot.comments }}</br>
     {% endif %}
+
     {% if plot.deal %}
       Plot's Deal: {{ plot.deal.id }}</br>
     {% endif %}

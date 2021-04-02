@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+  <div class="content-section">
+    <form method="POST" action="{{ url_for('editplotprice', plot_id=plot.id) }}">
+	  <fieldset class="form-group">
+
+		{{ form.csrf_token }}
+        <legend>Edit Buyer</legend>
+          
+          {{ form.address.label }}
+          {{ form.address(class='form-control', disabled='true') }}
+          <br>
+          
+		  <div class="form-group">
+        	{{ form.price.label }}
+        	{% if form.price.errors %}
+        	  {{ form.price(class='form-control is-invalid') }}
+          	  <div class="invalid-feedback">
+                {% for error in form.price.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+          	  </div>
+          	{% else %}
+          	  {% if plot.price %}
+                {{ form.price(class='form-control', value=plot.price) }}
+              {% else %}
+                {{ form.price(class='form-control', placeholder='Set Plot Price') }}
+              {% endif %}
+            {% endif %}
+ 
+      	  </div>
+	    
+	      <div class="form-group">
+	        {{ form.set(class='btn btn-outline-dark') }}
+	      </div>
+
+	  </fieldset>
+	</form>
+  </div>
+
+
+{% endblock %}
