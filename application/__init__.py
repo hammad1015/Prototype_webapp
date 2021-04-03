@@ -40,15 +40,19 @@ def create_app():
         admin.add_view(ProtectedModelView(model.Deal,  db.session, category='Databases', name="Deals" ))
         admin.add_view(ProtectedModelView(model.Plot,  db.session, category='Databases', name="Plots" ))
         admin.add_view(ProtectedModelView(model.Notes, db.session, category='Databases', name="Notes" ))
-        
+
         admin.add_view(ProtectedModelView(model.Transaction, db.session, category='Databases', name="Transactions"))
         
         admin.add_link(MenuLink(name='Back to Profile', url='/profile'))
 
-        #Creating tables in the database
-        # db.drop_all()
-        # db.create_all()
+        # Creating tables in the database
+        db.drop_all()
+        db.create_all()
 
-        #print(app.config)
+        # inserting dummy data
+        sql = open('dump.sql').read()
+        db.engine.execute(sql)
+
+        db.session.commit()
 
         return app   

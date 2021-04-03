@@ -27,6 +27,8 @@ class User(db.Model, UserMixin):
     	#return f'"<User {self.id}>"'         #"<User {}>".format(self.id)
     	return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
 
+
+
 class Buyer(db.Model):
     __tablename__ = 'buyer'
 
@@ -59,7 +61,7 @@ class Plot(db.Model):
 
     #Attribute Columns:
     id       = db.Column(db.Integer, primary_key=True)
-    adddress = db.Column(db.String(100), nullable=False)
+    address  = db.Column(db.String(100), nullable=False)
     price    = db.Column(db.Integer, nullable=False)
     size     = db.Column(db.String(20), nullable=False)
     status   = db.Column(db.String(20), nullable=False)

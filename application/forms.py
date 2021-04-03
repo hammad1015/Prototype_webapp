@@ -56,7 +56,12 @@ class AddDealForm(FlaskForm):
 	comments 				= TextAreaField ('Comments'              , validators=[])
 	submit 					= SubmitField   ('Create Deal')
 
-#Add Notes Form
+# Add Transaction Form
+class AddTransactionForm(FlaskForm):
+
+    pass
+
+# Add Notes Form
 class AddNotesForm(FlaskForm):
 
 	title   = StringField  ('Title',  validators=[DataRequired()])
@@ -73,3 +78,8 @@ class AddNormalUserForm(FlaskForm):
 	create 	 = SubmitField('Create User')
 
 
+# search form
+class SearchForm(FlaskForm):
+
+    value  = StringField('Value', validators= [DataRequired()])
+    search = SubmitField('Search')
