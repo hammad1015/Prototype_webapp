@@ -22,36 +22,36 @@ def create_app():
 
     #Initiaizaing Plugins
     db.__init__(app)
-    from .model import Plot, User, Buyer, Transaction, Deal, Notes  #importing here to avoid circular import problem
-
     login_manager.__init__(app)
     admin.init_app(app, index_view=AdminPanel(name="Admin Panel"))
+
+    from .model import Plot, User, Buyer, Transaction, Deal, Notes  #importing here to avoid circular import problem
 
     with app.app_context():
 
         #Creating tables in the database
-        db.drop_all()
-        db.create_all()
+       #  db.drop_all()
+       #  db.create_all()
 
-       # Adding Dummy Data
-        db.session.add(User(id=1, username="Faisal Rasool", email="faisal@example.com",  password="pop", rank=0))
-        db.session.add(User(id=2, username="Abdul Rafey",   email="rafey@example.com",   password="pop", rank=0))
-        db.session.add(User(id=3, username="Manager 1",     email="manager@example.com", password="pop", rank=1))
+       #  Adding Dummy Data
+       #  db.session.add(User(id=1, username="Faisal Rasool", email="faisal@example.com",  password="pop", rank=0))
+       #  db.session.add(User(id=2, username="Abdul Rafey",   email="rafey@example.com",   password="pop", rank=0))
+       #  db.session.add(User(id=3, username="Manager 1",     email="manager@example.com", password="pop", rank=1))
 
-        db.session.add(Plot(id=1, type="residential", address="first",  status="not sold", size="7"))
-        db.session.add(Plot(id=2, type="residential", address="second", status="not sold", size="2"))
-        db.session.add(Plot(id=3, type="residential", address="third",  status="not sold", size="5"))
-        db.session.add(Plot(id=4, type="residential", address="fouth",  status="not sold", size="5"))
-        db.session.add(Plot(id=5, type="residential", address="fifth",  status="not sold", size="7"))
-        db.session.add(Plot(id=6, type="residential", address="sixth",  status="not sold", size="5"))
-        db.session.add(Plot(id=7, type="residential", address="seventh",status="not sold", size="7"))
-        db.session.add(Plot(id=11, type="commercial", address="eleven", status="not sold", size="5"))
-        db.session.add(Plot(id=12, type="commercial", address="twelve", status="not sold", size="5"))
-        db.session.add(Plot(id=13, type="commercial", address="thirteen", status="not sold", size="5"))
-        db.session.add(Plot(id=14, type="commercial", address="fourteen", status="not sold", size="5"))
-        db.session.add(Plot(id=15, type="commercial", address="fifteen",  status="not sold", size="5"))
-        db.session.add(Plot(id=16, type="commercial", address="sixteen",  status="not sold", size="5"))
-        db.session.commit()
+       #  db.session.add(Plot(id=1, type="residential", address="first",  status="not sold", size="7"))
+       #  db.session.add(Plot(id=2, type="residential", address="second", status="not sold", size="2"))
+       #  db.session.add(Plot(id=3, type="residential", address="third",  status="not sold", size="5"))
+       #  db.session.add(Plot(id=4, type="residential", address="fouth",  status="not sold", size="5"))
+       #  db.session.add(Plot(id=5, type="residential", address="fifth",  status="not sold", size="7"))
+       #  db.session.add(Plot(id=6, type="residential", address="sixth",  status="not sold", size="5"))
+       #  db.session.add(Plot(id=7, type="residential", address="seventh",status="not sold", size="7"))
+       #  db.session.add(Plot(id=11, type="commercial", address="eleven", status="not sold", size="5"))
+       #  db.session.add(Plot(id=12, type="commercial", address="twelve", status="not sold", size="5"))
+       #  db.session.add(Plot(id=13, type="commercial", address="thirteen", status="not sold", size="5"))
+       #  db.session.add(Plot(id=14, type="commercial", address="fourteen", status="not sold", size="5"))
+       #  db.session.add(Plot(id=15, type="commercial", address="fifteen",  status="not sold", size="5"))
+       #  db.session.add(Plot(id=16, type="commercial", address="sixteen",  status="not sold", size="5"))
+       #  db.session.commit()
 
         #Addning Databse Viewss to Admin Panel
         admin.add_view(ProtectedModelView(User,  db.session, category='Databases', name="Users"))

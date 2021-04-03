@@ -209,7 +209,7 @@ def editplotprice(plot_id):
         db.session.commit()
 
         flash('Plot Price Successfully Edited', 'success')
-        return redirect(url_for('profile'))
+        return redirect(url_for('plotinfo', plot_id=plot_id))
 
     return render_template('editplotprice.html', plot=plot, form=form)
 

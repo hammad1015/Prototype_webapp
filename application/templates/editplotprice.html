@@ -7,12 +7,12 @@
 	  <fieldset class="form-group">
 
 		{{ form.csrf_token }}
-        <legend>Edit Buyer</legend>
+        <legend>Edit Plot Price</legend>
           
           {{ form.address.label }}
           {{ form.address(class='form-control', disabled='true') }}
           <br>
-          
+
 		  <div class="form-group">
         	{{ form.price.label }}
         	{% if form.price.errors %}
