@@ -1,13 +1,15 @@
+from enum import unique
 from flask_login import UserMixin
 from . import db
 
 class User(db.Model, UserMixin):
     #Attribute Columns
     id       = db.Column(db.Integer,     primary_key=True) 
-    email    = db.Column(db.String(75),  unique=True) 
-    username = db.Column(db.String(50),  nullable=False) 
-    password = db.Column(db.String(100), nullable=False) 
-    rank     = db.Column(db.Integer,     nullable=False)
+
+    email    = db.Column(db.String(75) , nullable= False, unique= True) 
+    username = db.Column(db.String(50) , nullable= False) 
+    password = db.Column(db.String(100), nullable= False) 
+    rank     = db.Column(db.Integer    , nullable= False)
 
     #Relationships:
     notes = db.relationship("Notes", backref="user_object", lazy=True)
@@ -27,14 +29,17 @@ class User(db.Model, UserMixin):
     	#return f'"<User {self.id}>"'         #"<User {}>".format(self.id)
     	return f'Email: {self.email}, Username: {self.username}, Password: {self.password}'
 
+
+
 class Buyer(db.Model):
     __tablename__ = 'buyer'
 
     #Attribute Columns
-    id       = db.Column(db.Integer, primary_key=True)
-    name     = db.Column(db.String(75), nullable=False)
-    cnic     = db.Column(db.Integer, unique=True, nullable=False)
-    comments = db.Column(db.Text, default=db.null(), nullable=True)
+    id       = db.Column(db.Integer,    primary_key=True)
+
+    name     = db.Column(db.String(75), nullable= False)
+    cnic     = db.Column(db.Integer,    nullable= False, unique = True)
+    comments = db.Column(db.Text,       nullable= True , default= db.null())
 
     #Relationships:
     #This attribute would return the deal obect this buyer is associated to
@@ -45,10 +50,11 @@ class CommissionAgent(db.Model):
 
     #Attribute Columns:
     id              = db.Column(db.Integer, primary_key=True)
-    name            = db.Column(db.String(75), nullable=False)
-    cnic            = db.Column(db.Integer, nullable=False)
-    commission_rate = db.Column(db.Float, nullable=False)
-    comments        = db.Column(db.Text, nullable=True, default=None)
+
+    name            = db.Column(db.String(75), nullable= False)
+    cnic            = db.Column(db.Integer   , nullable= False)
+    commission_rate = db.Column(db.Float     , nullable= False)
+    comments        = db.Column(db.Text      , nullable= True, default=None)
 
     #Relationships:
     #This attribute returns a list of deals that  are associated to a particular agent, when called
@@ -59,8 +65,9 @@ class Plot(db.Model):
 
     #Attribute Columns:
     id       = db.Column(db.Integer,     primary_key=True)
+
     type     = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(100),  nullable=False)
+    address  = db.Column(db.String(100), nullable=False)
     status   = db.Column(db.String(20),  nullable=False)
     price    = db.Column(db.Integer,     nullable=True)
     size     = db.Column(db.String(20),  nullable=False)    
@@ -95,10 +102,11 @@ class Transaction(db.Model):
     __tablename__ = 'transaction'
 
     #Attribute Columns:
-    id        = db.Column(db.Integer, primary_key=True)
-    amount    = db.Column(db.Integer, nullable=False)
-    date_time = db.Column(db.DateTime, nullable=False)
-    comments  = db.Column(db.Text, nullable=True, default=None)
+    id        = db.Column(db.Integer , primary_key=True)
+    
+    amount    = db.Column(db.Integer , nullable= False)
+    date_time = db.Column(db.DateTime, nullable= False)
+    comments  = db.Column(db.Text    , nullable= True, default=None)
 
     #ForeginKey Columns:
     deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=False)
@@ -109,10 +117,11 @@ class Notes(db.Model):
     __tablename__ = 'notes'
 
     #Attribute Columns:
-    id        = db.Column(db.Integer, primary_key=True)
-    title     = db.Column(db.String(50), nullable=False, default='Title')
-    content    = db.Column(db.Text, nullable=True, default=None)
-    date_time = db.Column(db.DateTime, nullable=False)
+    id        = db.Column(db.Integer   , primary_key=True)
+
+    title     = db.Column(db.String(50), nullable= False, default= 'Title')
+    content   = db.Column(db.Text      , nullable= True , default= None)
+    date_time = db.Column(db.DateTime  , nullable= False)
 
     #ForeginKey Columns:
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
