@@ -3,13 +3,26 @@
 {% block content %}	
     
     <div class="text-center">
-		<button id="buyer-button" class="btn btn-info" onclick="buyer()">Buyers</button>
-		<button id="plots"  class="btn btn-info" onclick="plot()">Plot</button>
-		<button id="CAs"    class="btn btn-info" onclick="CAs()">Commission Agent</button>
+		<button id="buyers-button" onclick="clicked('buyers')">
+			Buyers
+		</button>
+		<button id="plots-button"  onclick="clicked('plots')">
+			Plot
+		</button>
+		<button id="CAs-button"    onclick="clicked('CAs')">
+			Commission Agent
+		</button>
+		<button id="ETs-button"    onclick="clicked('ETs')">
+			Expenditure Types
+		</button>
 	</div>
 
 	<!-- Buyers -->
-	<div id="buyer-div" style="display: block;">
+	{% if active == "buyers" %}
+		<div id="buyers-div" style="display: block;">
+	{% else %}
+		<div id="buyers-div" style="display: none;">
+	{% endif %}
 	{% for buyer in buyers %}
     <div class="row pl-5">
       
@@ -48,8 +61,12 @@
     {% endfor %}
 	</div>
 
-	<!-- Buyers -->
-	<div id="plot-div" style="display: none;">
+	<!-- Plots -->
+	{% if active == "plots" %}
+		<div id="plots-div" style="display: block;">
+	{% else %}
+		<div id="plots-div" style="display: none;">
+	{% endif %}
 	{% for plot in plots %}
     <div class="row pl-5">
       
@@ -93,43 +110,48 @@
     {% endfor %}
     </div>
 
+    <!-- CAs -->
+    {% if active == "CAs" %}
+		<div id="CAs-div" style="display: block;">
+	{% else %}
+		<div id="CAs-div" style="display: none;">
+	{% endif %}
+	{% for CA in CAs %}
+	{% endfor %}
+    </div>
+
+    <!-- ETs -->
+    {% if active == "ETs" %}
+		<div id="ETs-div" style="display: block;">
+	{% else %}
+		<div id="ETs-div" style="display: none;">
+	{% endif %}
+	{% for ET in ETs %}
+
+		<legend>Expenditure Type: {{ ET.name }}</legend>
+
+	{% endfor %}
+    </div>
+
 
 	<script type="text/javascript">
-		function buyer(){
-			document.getElementById("buyer-div").style.display = 'block';
-			document.getElementById("plot-div").style.display  = 'none';
-			//document.getElementById("CAs-div").style.display   = 'none';
+		let all = ["buyers", "plots", "CAs", "ETs"];
 
+		clicked("{{ active }}");
+
+		function clicked(name){
+			//Turning on the cliked button and div
+			document.getElementById(name+"-div").style.display = 'block';
+			document.getElementById(name+"-button").className  = 'btn btn-info';
+
+			//Turning off the resst of buttons and divs
+			for(let each of all){
+				if(each != name){
+					document.getElementById(each+"-div").style.display = 'none';
+					document.getElementById(each+"-button").className  = 'btn btn-outline-info';
+				}
+			}
 		}
-
-		function plot(){
-			document.getElementById("buyer-div").style.display = 'none';
-			document.getElementById("plot-div").style.display  = 'block';
-			//document.getElementById("CAs-div").style.display   = 'none';			
-			
-		}
-
-		function CAs(){
-			document.getElementById("buyer-div").style.display = 'none';
-			document.getElementById("plot-div").style.display  = 'none';
-			//document.getElementById("CAs-div").style.display   = 'block';			
-			
-		}
-
-			/*$('#buyer-button').on('click', function() {
-				$('#buyer-div').show();
-				$('#plot-div').hide();
-				$('#CAs-div').hide();
-			});
-
-			$('#plots-button').on('click', function() {
-				$('#buyer-div').hide();
-				$('#plot-div').show();
-				$('#CAs-div').hide();
-			});
-
-		*/
-		
 	</script>
     
 
