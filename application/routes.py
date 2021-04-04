@@ -112,7 +112,12 @@ def add():
 @app.route('/display')
 @login_required
 def display():
-    return render_template('display.html')
+
+    buyers   = Buyer.query.all()
+    plots    = Plot.query.all()
+    #c_agents = CommissionAgent.query.all()
+
+    return render_template('display.html', buyers=buyers, plots=plots)
 
 
 @app.route('/display/buyers')
