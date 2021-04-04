@@ -1,12 +1,136 @@
 {% extends 'layout.html' %}
 
 {% block content %}	
-
-    <h1>Username: {{current_user.username}}</h1></br>
     
-	<ul>
-		<a href="{{ url_for('displaybuyers') }}">Display All buyers</a>
-	</ul>
+    <div class="text-center">
+		<button id="buyer-button" class="btn btn-info" onclick="buyer()">Buyers</button>
+		<button id="plots"  class="btn btn-info" onclick="plot()">Plot</button>
+		<button id="CAs"    class="btn btn-info" onclick="CAs()">Commission Agent</button>
+	</div>
+
+	<!-- Buyers -->
+	<div id="buyer-div" style="display: block;">
+	{% for buyer in buyers %}
+    <div class="row pl-5">
+      
+	  <legend>
+        <strong>Buyer ID {{buyer.id}}:</strong>
+      </legend>
+
+      <p>
+        Buyer Name: {{ buyer.name }}</br>
+        Buyer CNIC: {{ buyer.cnic }}</br>
+        {% if buyer.comments %}
+          Comments: {{ buyer.comments }}</br>
+        {% endif %}
+        {% if buyer.deals[0] %}
+          Buyer's Deals:
+          {% for deal in buyer.deals %}
+            {{ deal.id }}
+          {% endfor %}
+          <br>
+        {% endif %}
+      </p>
+    </div>
+        
+    <div class="row pl-5 pb-4 border-bottom border-secondary"> 
+      {% if not current_user.rank %}
+          
+        <button class="btn btn-outline-danger btn-sm"><a class="deleteLink" href="{{ url_for('deletebuyer', buyer_id=buyer.id) }}">Delete Buyer</a></button>
+
+      {% endif %}
+        
+        <button class="btn btn-outline-secondary btn-sm  ml-2"><a href="{{ url_for('editbuyer', buyer_id=buyer.id) }}">Edit Buyer Info</a></button>
+        
+    </div>
+    <br><br>
+        
+    {% endfor %}
+	</div>
+
+	<!-- Buyers -->
+	<div id="plot-div" style="display: none;">
+	{% for plot in plots %}
+    <div class="row pl-5">
+      
+	  <legend>
+        <strong>Plot ID {{plot.id}}:</strong>
+      </legend>
+
+      <p>
+        <p>
+		    Plot ID: {{ plot.id }}</br>
+		    Plot Address: {{ plot.address }}</br>
+
+		    {% if not plot.price %}
+		      Plot Price: <span style="color: red;">Not Set</span> 
+		      &nbsp&nbsp&nbsp&nbsp&nbsp 
+		      {% if not current_user.rank %}
+		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
+		      {% endif %}
+		    {% else %}
+		      Plot Price: {{ plot.price }}
+		      &nbsp&nbsp&nbsp&nbsp&nbsp
+		      {% if not current_user.rank %}
+		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
+		      {% endif %}
+		    {% endif %}</br>    
+
+		    Plot Size: {{ plot.size }}</br>
+		    Status: {{ plot.status }}</br>
+
+		    {% if plot.comments %}
+		      Comments: {{ plot.comments }}</br>
+		    {% endif %}
+
+		    {% if plot.deal %}
+		      Plot's Deal: {{ plot.deal.id }}</br>
+		    {% endif %}
+		 </p>
+      </p>
+    </div>  
+        
+    {% endfor %}
+    </div>
+
+
+	<script type="text/javascript">
+		function buyer(){
+			document.getElementById("buyer-div").style.display = 'block';
+			document.getElementById("plot-div").style.display  = 'none';
+			//document.getElementById("CAs-div").style.display   = 'none';
+
+		}
+
+		function plot(){
+			document.getElementById("buyer-div").style.display = 'none';
+			document.getElementById("plot-div").style.display  = 'block';
+			//document.getElementById("CAs-div").style.display   = 'none';			
+			
+		}
+
+		function CAs(){
+			document.getElementById("buyer-div").style.display = 'none';
+			document.getElementById("plot-div").style.display  = 'none';
+			//document.getElementById("CAs-div").style.display   = 'block';			
+			
+		}
+
+			/*$('#buyer-button').on('click', function() {
+				$('#buyer-div').show();
+				$('#plot-div').hide();
+				$('#CAs-div').hide();
+			});
+
+			$('#plots-button').on('click', function() {
+				$('#buyer-div').hide();
+				$('#plot-div').show();
+				$('#CAs-div').hide();
+			});
+
+		*/
+		
+	</script>
     
 
 {% endblock %}
