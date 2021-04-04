@@ -3,33 +3,20 @@ from flask              import current_app as app
 from flask_login        import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy   import sqlalchemy
 
-<<<<<<< HEAD
-from .forms             import * #LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SearchForm, 
-from .model             import db, User, Buyer, Deal, Plot, Transaction, Notes
+from .forms             import * # LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SearchForm, 
+from .model             import * # db, User, Buyer, Deal, Plot, Transaction, Notes
 from .middleware        import Middleware
 from .                  import login_manager
 from .                  import admin
-=======
-from .forms import * #LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SetPlotPrice
-from .model import * #db, User, Buyer, Deal, Plot, Transaction, Notes
-from .middleware import Middleware
-from . import login_manager
->>>>>>> fc63d52468b7a1110c5ae1b6badc724ecc7bef37
 
 from datetime           import datetime
 from application        import middleware
 
 
 #Setting utility variables
-<<<<<<< HEAD
 GET  = 'GET'
 POST = 'POST'
 
-=======
-GET            = "GET"
-POST           = "POST"
- 
->>>>>>> fc63d52468b7a1110c5ae1b6badc724ecc7bef37
 
 @app.route('/'    , methods= [GET])
 @app.route('/home', methods= [GET])
@@ -39,11 +26,7 @@ def home():
 
 @app.route('/about', methods= [GET])
 def about():
-<<<<<<< HEAD
     return render_template('about.html',  User= User)
-=======
-    return render_template('about.html')
->>>>>>> fc63d52468b7a1110c5ae1b6badc724ecc7bef37
 
 
 #This function should return the user for the user_id
@@ -114,11 +97,7 @@ def allnotes():
     return render_template('allnotes.html', notes=notes)
 
 
-<<<<<<< HEAD
 @app.route('/map', methods=[GET])
-=======
-@app.route("/map", methods=[GET])
->>>>>>> fc63d52468b7a1110c5ae1b6badc724ecc7bef37
 @login_required
 def map():
     return render_template('map.html')
@@ -404,9 +383,6 @@ def addnormaluser():
     return render_template('addnormaluser.html', form=form)
 
 
-<<<<<<< HEAD
-@app.route('/logout', methods=[GET])
-=======
 @app.route("/add/expendituretype", methods=[GET, POST])
 @login_required
 def addexpendituretype():
@@ -427,7 +403,6 @@ def addexpendituretype():
 
 
 @app.route("/logout", methods=[GET])
->>>>>>> fc63d52468b7a1110c5ae1b6badc724ecc7bef37
 @login_required
 def logout():
     logout_user()

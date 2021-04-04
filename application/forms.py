@@ -80,9 +80,14 @@ class AddNormalUserForm(FlaskForm):
 class SetPlotPrice(FlaskForm):
 	
 	address = SelectField('Address', choices=[row[0] for row in Plot.query.with_entities(Plot.address).all()])
-	price   = IntegerField('Price', validators=[DataRequired()])
+	price   = IntegerField('Price',  validators=[DataRequired()])
 	set     = SubmitField('Set Price')
 
+#Add Expenditure Type Form
+class AddExpendituretypeForm(FlaskForm):
+
+	name = StringField('Name of Expenditure', validators=[DataRequired(), Length(min=1, max=100)])
+	add  = SubmitField('Add Expenditure Type')
 
 # search form
 class SearchForm(FlaskForm):
