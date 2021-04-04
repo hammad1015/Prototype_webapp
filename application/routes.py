@@ -3,19 +3,18 @@ from flask import current_app as app
 from flask_login import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy import sqlalchemy
 
-from .forms import LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SetPlotPrice
-from .model import db, User, Buyer, Deal, Plot, Transaction, Notes
+from .forms import * #LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SetPlotPrice
+from .model import * #db, User, Buyer, Deal, Plot, Transaction, Notes
 from .middleware import Middleware
 from . import login_manager
-from . import admin
 
 from datetime import datetime
 
 
 #Setting utility variables
-GET          = "GET"
-POST         = "POST"
-
+GET            = "GET"
+POST           = "POST"
+ 
 
 @app.route("/", methods=[GET])
 @app.route("/home", methods=[GET])
@@ -25,7 +24,7 @@ def home():
 
 @app.route("/about", methods=[GET])
 def about():
-    return render_template('about.html',  User=User)
+    return render_template('about.html')
 
 
 #This function should return the user for the user_id
@@ -93,7 +92,6 @@ def allnotes():
     return render_template('allnotes.html', notes=notes)
 
 
-
 @app.route("/map", methods=[GET])
 @login_required
 def map():
@@ -109,12 +107,14 @@ def add():
 @app.route("/display")
 @login_required
 def display():
+   
+    active = request.args.get("active") or "buyers"
+    buyers = Buyer.query.all()
+    plots  = Plot.query.all()
+    CAs    = CommissionAgent.query.all()
+    ETs    = Expenditure.query.all()
 
-    buyers   = Buyer.query.all()
-    plots    = Plot.query.all()
-    #c_agents = CommissionAgent.query.all()
-
-    return render_template('display.html', buyers=buyers, plots=plots)
+    return render_template('display.html', active=active, buyers=buyers, plots=plots, CAs=CAs, ETs=ETs)
 
 
 @app.route("/display/buyers")
@@ -363,6 +363,25 @@ def addnormaluser():
         return redirect(url_for('profile'))
     
     return render_template('addnormaluser.html', form=form)
+
+
+@app.route("/add/expendituretype", methods=[GET, POST])
+@login_required
+def addexpendituretype():
+
+    form = AddExpendituretypeForm()
+    if form.validate_on_submit():
+        type = Expenditure(
+                    name=form.name.data
+                )
+        db.session.add(type)
+        db.session.commit()
+
+        flash(f'New Expenditure Type \'{form.name.data}\' Created', 'success')
+        return redirect(url_for('display', active="ETs"))
+
+
+    return render_template('addexpendituretype.html', form=form)
 
 
 @app.route("/logout", methods=[GET])

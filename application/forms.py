@@ -7,7 +7,7 @@ from .model import Plot
 #Login Form 
 class LoginForm(FlaskForm):
 	
-    email    = StringField('Email', validators=[DataRequired(), Length(min=1, max=75)])
+    email    = StringField('Email',      validators=[DataRequired(), Length(min=1, max=75)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=1, max=100)])
     submit   = SubmitField('Login')
 
@@ -15,16 +15,16 @@ class LoginForm(FlaskForm):
 class AddBuyerForm(FlaskForm):
 
 	#id 	 = IntegerField('Buyer ID', validators=[DataRequired()])
-	name 	 = StringField('Name', validators=[DataRequired(), Length(min=1, max=75)])
-	cnic 	 = IntegerField('CNIC', validators=[DataRequired(), number_range(min=1)])
+	name 	 = StringField('Name',       validators=[DataRequired(), Length(min=1, max=75)])
+	cnic 	 = IntegerField('CNIC',      validators=[DataRequired(), number_range(min=1)])
 	comments = TextAreaField('Comments', validators=[])
 	submit 	 = SubmitField('Create Buyer')
 
 
 #Edit Buyer Info Form
 class EditBuyerForm(FlaskForm):
-	name 	 = StringField('Name', validators=[DataRequired(), Length(min=1, max=75)])
-	cnic 	 = IntegerField('CNIC', validators=[DataRequired(), number_range(min=1)])
+	name 	 = StringField('Name',       validators=[DataRequired(), Length(min=1, max=75)])
+	cnic 	 = IntegerField('CNIC',      validators=[DataRequired(), number_range(min=1)])
 	comments = TextAreaField('Comments', validators=[])
 	submit 	 = SubmitField('Edit Buyer')
 
@@ -47,12 +47,12 @@ class DeleteBuyerForm(FlaskForm):
 class AddDealForm(FlaskForm):
 
 	#id 						= IntegerField('Deal ID', validators=[DataRequired()])
-	buyer_id 				= IntegerField('Buyer ID', validators=[DataRequired()])
-	plot_id 				= IntegerField('Plot ID', validators=[DataRequired()])
-	first_amount_recieved 	= IntegerField('First Paid Amount',  validators=[DataRequired()])
-	amount_per_installment 	= IntegerField('Amount per Installment', validators=[DataRequired()])
+	buyer_id 				= IntegerField('Buyer ID',              validators=[DataRequired()])
+	plot_id 				= IntegerField('Plot ID',  			    validators=[DataRequired()])
+	first_amount_recieved 	= IntegerField('First Paid Amount',  	validators=[DataRequired()])
+	amount_per_installment 	= IntegerField('Amount per Installment',validators=[DataRequired()])
 	installment_frequency 	= StringField('Installments per Year',  validators=[DataRequired()])
-	comments 				= TextAreaField('Comments', validators=[])
+	comments 				= TextAreaField('Comments', 			validators=[])
 	submit 					= SubmitField('Create Deal')
 
 #Add Notes Form
@@ -75,7 +75,12 @@ class AddNormalUserForm(FlaskForm):
 class SetPlotPrice(FlaskForm):
 	
 	address = SelectField('Address', choices=[row[0] for row in Plot.query.with_entities(Plot.address).all()])
-	price   = IntegerField('Price', validators=[DataRequired()])
+	price   = IntegerField('Price',  validators=[DataRequired()])
 	set     = SubmitField('Set Price')
 
+#Add Expenditure Type Form
+class AddExpendituretypeForm(FlaskForm):
+
+	name = StringField('Name of Expenditure', validators=[DataRequired(), Length(min=1, max=100)])
+	add  = SubmitField('Add Expenditure Type')
 
