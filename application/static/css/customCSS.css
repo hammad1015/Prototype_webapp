@@ -1,8 +1,19 @@
 .noteLink{
 	color: #373737;
 }
+
 .noteLink:hover{
 	color: #1FB0E2;
 	text-decoration: none;
 	transition-duration: 1;
+}
+
+.deleteLink {
+	text-decoration: none;
+	color: red;
+}
+
+.deleteLink:hover {
+	text-decoration: none;
+	color: white;
 }

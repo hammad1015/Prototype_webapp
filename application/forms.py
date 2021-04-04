@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from flask import Markup
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField, HiddenField, SelectField
 from wtforms.validators import DataRequired, Length, number_range
 
-from .model import db
+from .model import Plot
 
 #Login Form 
 class LoginForm(FlaskForm):
@@ -76,6 +75,13 @@ class AddNormalUserForm(FlaskForm):
 	email    = StringField('Email',      validators=[DataRequired(), Length(min=1, max=75)])
 	password = PasswordField('Password', validators=[Length(max=100)], default='12345')
 	create 	 = SubmitField('Create User')
+
+#Set Plot Price Form
+class SetPlotPrice(FlaskForm):
+	
+	address = SelectField('Address', choices=[row[0] for row in Plot.query.with_entities(Plot.address).all()])
+	price   = IntegerField('Price', validators=[DataRequired()])
+	set     = SubmitField('Set Price')
 
 
 # search form

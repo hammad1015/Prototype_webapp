@@ -71,7 +71,7 @@
     <div class="row pl-5 pb-4 border-bottom border-secondary"> 
       {% if not current_user.rank %}
           
-        <button class="btn btn-outline-danger btn-sm"><a href="{{ url_for('deletebuyer', buyer_id=buyer.id) }}">Delete Buyer</button>
+        <button class="btn btn-outline-danger btn-sm"><a class="deleteLink" href="{{ url_for('deletebuyer', buyer_id=buyer.id) }}">Delete Buyer</button>
 
       {% endif %}
         

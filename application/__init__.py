@@ -3,10 +3,9 @@ from flask_sqlalchemy   import SQLAlchemy
 from flask_login        import LoginManager
 from flask_admin        import Admin
 
-from flask_admin.base import MenuLink
+from flask_admin.base   import MenuLink
 
 from .adminviews import AdminPanel, ProtectedModelView
-
 
 db            = SQLAlchemy()
 login_manager = LoginManager()
@@ -28,11 +27,20 @@ def create_app():
     login_manager.__init__(app)
     admin.init_app(app, index_view=AdminPanel(name= 'Admin Panel'))
 
+
     with app.app_context():
 
-        #Incuding Routes
-        from . import routes
         from . import model
+
+        # Creating tables in the database
+        db.drop_all()
+        db.create_all()
+
+        # inserting dummy data
+        sql = open('dump.sql').read()
+        db.engine.execute(sql)
+
+        db.session.commit()
 
         #Addning Databse Viewss to Admin Panel
         admin.add_view(ProtectedModelView(model.User,  db.session, category='Databases', name="Users" ))
@@ -45,14 +53,5 @@ def create_app():
         
         admin.add_link(MenuLink(name='Back to Profile', url='/profile'))
 
-        # Creating tables in the database
-        db.drop_all()
-        db.create_all()
-
-        # inserting dummy data
-        sql = open('dump.sql').read()
-        db.engine.execute(sql)
-
-        db.session.commit()
-
+        from . import routes
         return app   

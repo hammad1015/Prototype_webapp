@@ -135,6 +135,10 @@ def deletebuyer(buyer_id):
 
     buyer = Buyer.query.filter_by(id=buyer_id).first()
 
+    if buyer is None:
+        flash(f'No such buyer exists!', 'danger')
+        return redirect(url_for("displaybuyers"))
+
     db.session.delete(buyer)
     db.session.commit()
 
@@ -149,20 +153,24 @@ def editbuyer(buyer_id):
     form  = EditBuyerForm()
     buyer = Buyer.query.filter_by(id=buyer_id).first()
 
+    if buyer is None:
+        flash(f'No such buyer exists!', 'danger')
+        return redirect(url_for("displaybuyers"))
+
     if form.validate_on_submit():
 
         try:
-            name     = form.name.data
-            cnic     = form.cnic.data
-            comments = form.comments.data
+            # name     = form.name.data
+            # cnic     = form.cnic.data
+            # comments = form.comments.data
 
             db.session.query(Buyer).filter_by(
-                                id=buyer_id
-                                ).update({ 
-                                    'name':name,
-                                    'cnic':cnic,
-                                    'comments':comments
-            })
+                                        id=buyer_id
+                                    ).update({ 
+                                        'name': form.name.data,
+                                        'cnic': form.cnic.data,
+                                        'comments': form.comments.data
+                                    })
 
             db.session.commit()
             flash(f'Buyer Info with id "{buyer.id}"" Updated', 'success')
@@ -187,6 +195,26 @@ def plotinfo(plot_id):
         flash('ERROR: NO Such plot exists', 'danger')
         
     return render_template('plotinfo.html', plot=plot)
+
+
+@app.route("/edit/plotprice/<plot_id>", methods=[GET, POST])
+@login_required
+def editplotprice(plot_id):
+    
+    #Checking Authorization
+    Middleware.authorizeSuperUser(current_user)
+    
+    plot = Plot.query.filter_by(id=plot_id).first()
+
+    form = SetPlotPrice(address=plot.address)
+    if form.validate_on_submit():
+        db.session.query(Plot).filter_by(id=plot_id).update({'price': form.price.data})
+        db.session.commit()
+
+        flash('Plot Price Successfully Edited', 'success')
+        return redirect(url_for('plotinfo', plot_id=plot_id))
+
+    return render_template('editplotprice.html', plot=plot, form=form)
 
 
 @app.route('/add/buyer', methods=[GET, POST])
