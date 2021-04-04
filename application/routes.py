@@ -122,16 +122,10 @@ def display():
     return render_template('display.html', active=active, buyers=buyers, plots=plots, CAs=CAs, ETs=ETs)
 
 
-<<<<<<< HEAD
+
 # @app.route("/display/buyers")
 # @login_required
 # def displaybuyers():
-=======
-@app.route('/display/buyers')
-@login_required
-def displaybuyers():
->>>>>>> 931cc8215a694cfe4315b261ad7d25538d53b68f
-
 #     form = SearchBuyerForm()
 #     delete_form = DeleteBuyerForm()
 
@@ -139,11 +133,7 @@ def displaybuyers():
 #     return render_template('displaybuyers.html', buyers=buyers, form=form, delete_form=delete_form)
 
 
-<<<<<<< HEAD
 @app.route("/delete/buyer/<buyer_id>", methods=[POST, GET])
-=======
-@app.route('/delete/buyers/<buyer_id>', methods=[POST, GET])
->>>>>>> 931cc8215a694cfe4315b261ad7d25538d53b68f
 @login_required
 def deletebuyer(buyer_id):
 
