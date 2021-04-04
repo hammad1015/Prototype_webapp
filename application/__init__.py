@@ -37,8 +37,8 @@ def create_app():
         db.create_all()
 
         # inserting dummy data
-        # sql = open('dump.sql').read()
-        # db.engine.execute(sql)
+        sql = open('dump.sql').read()
+        db.engine.execute(sql)
 
         db.session.commit()
 
