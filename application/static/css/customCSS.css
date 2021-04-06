@@ -1,19 +1,277 @@
-.noteLink{
-	color: #373737;
+.noteLink {
+  color: #373737;
 }
 
-.noteLink:hover{
-	color: #1FB0E2;
-	text-decoration: none;
-	transition-duration: 1;
+.noteLink:hover {
+  color: #1fb0e2;
+  text-decoration: none;
+  transition-duration: 1;
 }
 
 .deleteLink {
-	text-decoration: none;
-	color: red;
+  text-decoration: none;
+  color: red;
 }
 
 .deleteLink:hover {
-	text-decoration: none;
-	color: white;
+  text-decoration: none;
+  color: white;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+.color-1 {
+  background-color: #ffffff;
+}
+
+.color-2 {
+  background-color: #f4feff;
+}
+
+.text-dark-1 {
+  font-size: 30px;
+  color: #1a1a1a;
+  font-weight: 900;
+  letter-spacing: 0.75px;
+}
+
+.text-dark-2 {
+  font-size: 24px;
+  color: #1a1a1a;
+  font-weight: 500;
+  letter-spacing: 0.75px;
+}
+
+.text-dark-3 {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 400;
+  letter-spacing: 0.75px;
+}
+
+.text-light-1 {
+  font-size: 30px;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0.75px;
+}
+
+.text-light-2 {
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.75px;
+}
+
+.text-light-3 {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 400;
+  letter-spacing: 0.75px;
+}
+.text-orange-1 {
+  font-size: 30px;
+  color: #f55536;
+  font-weight: 900;
+  letter-spacing: 0.75px;
+}
+
+.text-orange-2 {
+  font-size: 24px;
+  color: #f55536;
+  font-weight: 500;
+  letter-spacing: 0.75px;
+}
+
+.text-orange-3 {
+  font-size: 14px;
+  color: #f55536;
+  font-weight: 400;
+  letter-spacing: 0.75px;
+}
+
+.heading {
+  font-size: 100px;
+  font-weight: 900;
+  color: #f4feff;
+}
+
+.navbar {
+  background-color: #f4feff;
+  border-bottom: 1px solid #ffffff;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 400;
+  letter-spacing: 0.75px;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  color: #f55536;
+  font-weight: 500;
+  letter-spacing: 0.75px;
+}
+
+.slider {
+  background-color: #f4feff;
+  height: 80vh;
+  position: relative !important;
+}
+
+.slider-left {
+  position: absolute !important;
+  width: 50% !important;
+  background-color: #f4feff !important;
+  height: 80vh !important;
+}
+
+.slider-right {
+  position: absolute !important;
+  width: 50% !important;
+  left: 50% !important;
+  background-color: #f55536 !important;
+  height: 80vh !important;
+}
+
+.btn {
+  background-color: #f55536;
+  color: #ffffff;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.card-body {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* footer style */
+.footer {
+  background-color: #f4feff;
+  padding-top: 145px;
+  padding-bottom: 120px;
+  background-attachment: fixed;
+  margin-top: 0px;
+}
+
+.social-icon a {
+  margin: 0 16px 20px 16px;
+  display: inline-block;
+}
+
+.footer .fa {
+  font-size: 30px;
+  color: #f55536;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  line-height: 2;
+  border: 10px solid #f55536;
+  text-align: center;
+  transition: all 0.7s ease-in;
+}
+
+.bordernow {
+  width: 40px;
+  border-bottom: 2px solid white;
+  margin-top: 20px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  color: white;
+  max-width: 30px;
+  max-height: 30px;
+}
+
+ul {
+  list-style: none outside none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.demo .item {
+  margin-bottom: 60px;
+}
+
+.demo {
+  width: 100%;
+}
+
+.slider-icon a {
+  margin: 20px 8px 20px 8px;
+  display: inline-block;
+}
+
+.slider .fa {
+  font-size: 20px;
+  color: #f55536;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  line-height: 2;
+  border: 10px solid #fff;
+  text-align: center;
+  transition: all 0.7s ease-in;
+}
+
+.heading-1 {
+  position: relative;
+}
+
+.heading-2 {
+  position: absolute;
+  z-index: 100;
+  left: 31%;
+  margin-top: 70px;
+}
+
+.heading-3 {
+  position: relative;
+  color: #f6664a;
+  margin-top: 100px;
+}
+
+.heading-4 {
+  position: absolute;
+  z-index: 100;
+  left: 14%;
+  margin-top: 70px;
+}
+
+.login-head {
+  color: orange;
+}
+
+.gallery-width {
+  max-width: 474px;
+}
+
+.form-style {
+  background-color: black;
 }
