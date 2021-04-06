@@ -143,51 +143,9 @@
 
 {% endblock %}
 
-{% block script %}
-	<script type="text/javascript">
-		let all = ["buyers", "plots", "CAs", "ETs"];
-
-		clicked("{{ active }}");
-
-		function clicked(name){
-			//Turning on the cliked button and div
-			document.getElementById(name+"-div").style.display = 'block';
-			document.getElementById(name+"-button").className  = 'btn btn-info';
-
-			//Turning off the resst of buttons and divs
-			for(let each of all){
-				if(each != name){
-					document.getElementById(each+"-div").style.display = 'none';
-					document.getElementById(each+"-button").className  = 'btn btn-outline-info';
-				}
-			}
-		}
-
-		function makePlotCard(id, type, address, status, price, size, comments){
-			return 	"<p>" +
-						"Plot ID: "     	+ id 		+ "</br>" +
-						"Plot Type: " 		+ type 		+ "</br>" +
-						"Plot Address: "	+ address 	+ "</br>" +
-						"Plot Status: " 	+ status 	+ "</br>" +
-						"Plot Price: " 		+ price 	+ "</br>" +
-						"Plot Size: " 		+ size 		+ "</br>" +
-						"Plot Comments: " 	+ comments 	+ "</br>" +
-					"</p>\n";
-
-		}
-
-		$(document).ready(function(){
-			$("#filter-btn").on('click', function(){
-				$.post('/filterplot/'+$("#status").val(), function(plots) {
-				  let str = '';
-				  for(let plot of plots.json_list){
-				  	str += makePlotCard(plot.id, plot.type, plot.address, plot.status, plot.price, plot.size, plot.comments);
-				  }
-				  $("#plots-div").html(str);
-				  
-				});
-			});
-		})
-		
-	</script>
-    {% endblock %}
+	{% block script %}
+		<script src="{{ url_for('static', filename='js/displaypage.js') }}"></script>
+		<script type="text/javascript">
+			clicked("{{ active }}");
+		</script>
+   	{% endblock %}
