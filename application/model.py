@@ -77,6 +77,19 @@ class Plot(db.Model):
     #This attribute would return the deal obect this plot is associated to
     deal = db.relationship("Deal", backref='plot_object', uselist=False)
 
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+               'id'       : self.id,               
+               'type'     : self.type,
+               'address'  : self.address,
+               'status'   : self.status,
+               'price'    : self.price,
+               'size'     : self.size,
+               'comments' : self.status,
+              }
+
 
 class Deal(db.Model):
     __tablename__ = 'deal'

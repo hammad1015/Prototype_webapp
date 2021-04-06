@@ -1,4 +1,4 @@
-from flask              import Blueprint, redirect, render_template, flash, request, session, url_for, abort
+from flask              import Blueprint, redirect, render_template, flash, request, session, url_for, abort, jsonify
 from flask              import current_app as app
 from flask_login        import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy   import sqlalchemy
@@ -119,7 +119,9 @@ def display():
     CAs    = CommissionAgent.query.all()
     ETs    = Expenditure.query.all()
 
-    return render_template('display.html', active=active, buyers=buyers, plots=plots, CAs=CAs, ETs=ETs)
+    filterPlotForm = FilterPlotForm()
+
+    return render_template('display.html', active=active, buyers=buyers, plots=plots, CAs=CAs, ETs=ETs, filterPlotForm=filterPlotForm)
 
 
 
@@ -433,4 +435,13 @@ def search():
     ).all()
 
     return render_template('test.html', buyers= buyers, plots= plots)
+
+
+@app.route('/filterplot/<status>', methods=[POST])
+@login_required
+def filterplot(status):
+
+    plots = Plot.query.filter_by(status=status).all()
+
+    return jsonify(json_list=[plot.serialize for plot in plots])
 

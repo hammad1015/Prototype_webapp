@@ -2,6 +2,7 @@ from flask              import Flask
 from flask_sqlalchemy   import SQLAlchemy
 from flask_login        import LoginManager
 from flask_admin        import Admin
+from flask_cors         import CORS
 
 from flask_admin.base   import MenuLink
 
@@ -10,6 +11,7 @@ from .adminviews import AdminPanel, ProtectedModelView
 db            = SQLAlchemy()
 login_manager = LoginManager()
 admin         = Admin()
+#cors          = CORS(app)
 
 def create_app():
     '''
@@ -26,21 +28,22 @@ def create_app():
     db.__init__(app)
     login_manager.__init__(app)
     admin.init_app(app, index_view=AdminPanel(name= 'Admin Panel'))
-
+    #cors.__init__(app)
+    cors          = CORS(app, support_credentials=True)
 
     with app.app_context():
 
         from . import model
 
         # Creating tables in the database
-        db.drop_all()
-        db.create_all()
+        # db.drop_all()
+        # db.create_all()
 
         # inserting dummy data
-        sql = open('dump.sql').read()
-        db.engine.execute(sql)
+        # sql = open('dump.sql').read()
+        # db.engine.execute(sql)
 
-        db.session.commit()
+        # db.session.commit()
 
         #Addning Databse Viewss to Admin Panel
         admin.add_view(ProtectedModelView(model.User,  db.session, category='Databases', name="Users" ))

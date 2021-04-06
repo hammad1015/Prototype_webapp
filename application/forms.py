@@ -94,3 +94,10 @@ class SearchForm(FlaskForm):
 
     value  = StringField('Value', validators= [DataRequired()])
     search = SubmitField('Search')
+
+
+#Filter Plot by Status Form
+class FilterPlotForm(FlaskForm):
+
+	status = SelectField('Filter By:', choices=[('sold','Sold'), ('not sold','Not Sold'), ('in a deal','In a Deal')])
+	filter = SubmitField('Filter')

@@ -67,46 +67,54 @@
 	{% else %}
 		<div id="plots-div" style="display: none;">
 	{% endif %}
+
+	<div class="row pl-4 my-3">
+		<div class="col-2">
+		  {{ filterPlotForm.status.label }}
+		</div>
+		<div class="col-6">
+		  {{ filterPlotForm.status(class='form-control') }}
+		</div>
+		<div class="col-4">
+			{{ filterPlotForm.filter(class='btn btn-outline-primary', id='filter-btn') }}
+		</div>
+	</div>	
+	
 	{% for plot in plots %}
     <div class="row pl-5">
+
+      <p>        
+	    Plot ID: {{ plot.id }}</br>
+	    Plot Address: {{ plot.address }}</br>
+
+	    {% if not plot.price %}
+	      Plot Price: <span style="color: red;">Not Set</span> 
+	      &nbsp&nbsp&nbsp&nbsp&nbsp 
+	      {% if not current_user.rank %}
+	        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
+	      {% endif %}
+	    {% else %}
+	      Plot Price: {{ plot.price }}
+	      &nbsp&nbsp&nbsp&nbsp&nbsp
+	      {% if not current_user.rank %}
+	        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
+	      {% endif %}
+	    {% endif %}</br>    
+
+	    Plot Size: {{ plot.size }}</br>
+	    Status: {{ plot.status }}</br>
+
+	    {% if plot.comments %}
+	      Comments: {{ plot.comments }}</br>
+	    {% endif %}
+
+	    {% if plot.deal %}
+	      Plot's Deal: {{ plot.deal.id }}</br>
+	    {% endif %}
+	  </p>
       
-	  <legend>
-        <strong>Plot ID {{plot.id}}:</strong>
-      </legend>
-
-      <p>
-        <p>
-		    Plot ID: {{ plot.id }}</br>
-		    Plot Address: {{ plot.address }}</br>
-
-		    {% if not plot.price %}
-		      Plot Price: <span style="color: red;">Not Set</span> 
-		      &nbsp&nbsp&nbsp&nbsp&nbsp 
-		      {% if not current_user.rank %}
-		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
-		      {% endif %}
-		    {% else %}
-		      Plot Price: {{ plot.price }}
-		      &nbsp&nbsp&nbsp&nbsp&nbsp
-		      {% if not current_user.rank %}
-		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
-		      {% endif %}
-		    {% endif %}</br>    
-
-		    Plot Size: {{ plot.size }}</br>
-		    Status: {{ plot.status }}</br>
-
-		    {% if plot.comments %}
-		      Comments: {{ plot.comments }}</br>
-		    {% endif %}
-
-		    {% if plot.deal %}
-		      Plot's Deal: {{ plot.deal.id }}</br>
-		    {% endif %}
-		 </p>
-      </p>
     </div>  
-        
+    <hr/>
     {% endfor %}
     </div>
 
@@ -133,7 +141,9 @@
 	{% endfor %}
     </div>
 
+{% endblock %}
 
+{% block script %}
 	<script type="text/javascript">
 		let all = ["buyers", "plots", "CAs", "ETs"];
 
@@ -152,7 +162,32 @@
 				}
 			}
 		}
-	</script>
-    
 
-{% endblock %}
+		function makePlotCard(id, type, address, status, price, size, comments){
+			return 	"<p>" +
+						"Plot ID: "     	+ id 		+ "</br>" +
+						"Plot Type: " 		+ type 		+ "</br>" +
+						"Plot Address: "	+ address 	+ "</br>" +
+						"Plot Status: " 	+ status 	+ "</br>" +
+						"Plot Price: " 		+ price 	+ "</br>" +
+						"Plot Size: " 		+ size 		+ "</br>" +
+						"Plot Comments: " 	+ comments 	+ "</br>" +
+					"</p>\n";
+
+		}
+
+		$(document).ready(function(){
+			$("#filter-btn").on('click', function(){
+				$.post('/filterplot/'+$("#status").val(), function(plots) {
+				  let str = '';
+				  for(let plot of plots.json_list){
+				  	str += makePlotCard(plot.id, plot.type, plot.address, plot.status, plot.price, plot.size, plot.comments);
+				  }
+				  $("#plots-div").html(str);
+				  
+				});
+			});
+		})
+		
+	</script>
+    {% endblock %}
