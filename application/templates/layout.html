@@ -111,9 +111,9 @@
 
   <div class="row">
 
-    <div class="col-2"></div>
+    
 
-     <div class="col-8">
+     <div class="col-12">
       {% for category, message in get_flashed_messages(with_categories=true) %}
         {% if message %}
           <div class="alert alert-{{ category }}">
@@ -126,7 +126,7 @@
 
       </div>
 
-      <div class="col-2"></div>
+      
 
     </div>
 
