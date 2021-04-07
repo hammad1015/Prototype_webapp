@@ -148,6 +148,13 @@ body {
 .btn {
   background-color: #f55536;
   color: #ffffff;
+  border: #f85130;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  background-color: #fa7f66;
+  color: #1a1a1a;
 }
 
 .card {
@@ -273,5 +280,40 @@ ul {
 }
 
 .form-style {
-  background-color: black;
+  margin: 40px 20px;
+  padding: 50px 20px;
+  border-radius: 25px;
+  background-color: #f4feff;
+}
+
+.btn-center {
+  text-align: center;
+}
+
+.form-control {
+  border: 1px solid #1a1a1a;
+  color: #1a1a1a;
+}
+
+/* about style */
+
+.about-img {
+  max-height: 400px;
+  object-fit: contain;
+  width: 400px;
+  border-radius: 8%;
+}
+
+.about-img-container {
+  display: flex;
+  justify-content: end;
+}
+
+.about-img-container-mid {
+  display: flex;
+  justify-content: start;
+}
+
+.alignment{
+  text-align: right;
 }
