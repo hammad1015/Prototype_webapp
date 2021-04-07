@@ -27,7 +27,9 @@
     <div class="row pl-5">
       
 	  <legend>
-        <strong>Buyer ID {{buyer.id}}:</strong>
+        <strong>
+          <a href="{{ url_for('buyerinfo', buyer_id=buyer.id) }}">Buyer ID {{buyer.id}}:</a>
+        </strong>
       </legend>
 
       <p>
@@ -80,42 +82,52 @@
 		</div>
 	</div>	
 	
-	{% for plot in plots %}
-    <div class="row pl-5">
+	<div id="plots-info">
+		{% for plot in plots %}
+	    <div class="row pl-5">
 
-      <p>        
-	    Plot ID: {{ plot.id }}</br>
-	    Plot Address: {{ plot.address }}</br>
+	      <legend>
+		    <strong>
+		      <a href="{{ url_for('plotinfo', plot_id=plot.id) }}">Plot ID {{plot.id}}:</a>
+		    </strong>
+		  </legend>
 
-	    {% if not plot.price %}
-	      Plot Price: <span style="color: red;">Not Set</span> 
-	      &nbsp&nbsp&nbsp&nbsp&nbsp 
-	      {% if not current_user.rank %}
-	        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
-	      {% endif %}
-	    {% else %}
-	      Plot Price: {{ plot.price }}
-	      &nbsp&nbsp&nbsp&nbsp&nbsp
-	      {% if not current_user.rank %}
-	        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
-	      {% endif %}
-	    {% endif %}</br>    
+	      <p>
+		    Plot Address: {{ plot.address }}</br>
 
-	    Plot Size: {{ plot.size }}</br>
-	    Status: {{ plot.status }}</br>
+		    {% if not plot.price %}
+		      Plot Price: <span style="color: red;">Not Set</span> 
+		      &nbsp&nbsp&nbsp&nbsp&nbsp 
+		      {% if not current_user.rank %}
+		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
+		      {% endif %}
+		    {% else %}
+		      Plot Price: {{ plot.price }}
+		      &nbsp&nbsp&nbsp&nbsp&nbsp
+		      {% if not current_user.rank %}
+		        (<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
+		      {% endif %}
+		    {% endif %}</br>    
 
-	    {% if plot.comments %}
-	      Comments: {{ plot.comments }}</br>
-	    {% endif %}
+		    Plot Size: {{ plot.size }}</br>
+		    Status: {{ plot.status }}</br>
 
-	    {% if plot.deal %}
-	      Plot's Deal: {{ plot.deal.id }}</br>
-	    {% endif %}
-	  </p>
-      
-    </div>  
-    <hr/>
-    {% endfor %}
+		    {% if plot.comments %}
+		      Comments: {{ plot.comments }}</br>
+		    {% endif %}
+
+		    {% if plot.deal %}
+		      Plot's Deal: 
+		      <a href="{{ url_for('dealinfo', deal_id=plot.deal.id) }}">
+		      	{{ plot.deal.id }}
+		      </a></br>
+		    {% endif %}
+		  </p>
+	      
+	    </div>  
+	    <hr/>
+	    {% endfor %}
+	  </div>
     </div>
 
     <!-- CAs -->
@@ -143,9 +155,9 @@
 
 {% endblock %}
 
-	{% block script %}
-		<script src="{{ url_for('static', filename='js/displaypage.js') }}"></script>
-		<script type="text/javascript">
-			clicked("{{ active }}");
-		</script>
-   	{% endblock %}
+{% block script %}
+	<script src="{{ url_for('static', filename='js/displaypage.js') }}"></script>
+	<script type="text/javascript">
+		clicked("{{ active }}");	
+	</script>
+{% endblock %}

@@ -1,7 +1,6 @@
 
 let tabs = ["buyers", "plots", "CAs", "ETs"];
 
-//clicked("{{ active }}");
 
 function clicked(name){
 	//Turning on the cliked button and div
@@ -17,28 +16,39 @@ function clicked(name){
 	}
 }
 
-function makePlotCard(id, type, address, status, price, size, comments){
-	return 	"<p>" +
-				"Plot ID: "     	+ id 		+ "</br>" +
-				"Plot Type: " 		+ type 		+ "</br>" +
-				"Plot Address: "	+ address 	+ "</br>" +
-				"Plot Status: " 	+ status 	+ "</br>" +
-				"Plot Price: " 		+ price 	+ "</br>" +
-				"Plot Size: " 		+ size 		+ "</br>" +
-				"Plot Comments: " 	+ comments 	+ "</br>" +
-			"</p>\n";
+function makePlotCard(plot){
+			console.log(plot.deal);
+			let str = "<p>" +
+						"Plot ID: "     	+ plot.id 		+ "</br>" +
+						"Plot Type: " 		+ plot.type 		+ "</br>" +
+						"Plot Address: "	+ plot.address 	+ "</br>" +
+						"Plot Status: " 	+ plot.status 	+ "</br>";
 
-}
+			if(!plot.price)
+				str += "Plot Price: <span style='color: red;''>Not Set</span></br>";
+
+			str += "Plot Size: " 		+ plot.size 		+ "</br>" +
+				   "Plot Comments: " 	+ plot.comments 	+ "</br>";
+
+			if(plot.deal){
+				str += "Plot's Deal: " + 
+				"<a href='" + "/dealinfo/" + plot.deal.id + "''>" + 
+					plot.deal.id + 
+				"</a></br>";
+			}
+
+			return str + "</p>\n";
+		}
 
 $(document).ready(function(){
 	$("#filter-btn").on('click', function(){
 		console.log($("#status").val());
-		$.post('/filterplot/'+$("#status").val(), function(plots) {
+		$.post('/rest/filterplot/'+$("#status").val(), function(plots) {
 		  let str = '';
 		  for(let plot of plots.json_list){
-		  	str += makePlotCard(plot.id, plot.type, plot.address, plot.status, plot.price, plot.size, plot.comments);
+		  	str += makePlotCard(plot);
 		  }
-		  $("#plots-div").html(str);
+		  $("#plots-info").html(str);
 		  
 		});
 	});

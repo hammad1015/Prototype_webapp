@@ -194,6 +194,17 @@ def editbuyer(buyer_id):
         return render_template('editbuyer.html', form=form, buyer=buyer)
 
 
+@app.route('/buyer/<buyer_id>')
+@login_required
+def buyerinfo(buyer_id):
+    buyer_id = int(buyer_id) 
+    buyer = Buyer.query.filter_by(id=buyer_id).first()
+
+    if buyer is None:
+        flash('ERROR: NO Such buyer exists', 'danger')
+        
+    return render_template('buyerinfo.html', buyer=buyer)
+
 @app.route('/plot/<plot_id>')
 @login_required
 def plotinfo(plot_id):
@@ -320,6 +331,20 @@ def adddeal():
 
     return render_template('adddeal.html', form= form)
 
+
+@app.route('/dealinfo/<deal_id>')
+@login_required
+def dealinfo(deal_id):
+
+    deal_id = int(deal_id) 
+    deal = Deal.query.filter_by(id=deal_id).first()
+
+    if deal is None:
+        flash('ERROR: NO Such deal exists', 'danger')
+
+    return render_template('dealinfo.html', deal=deal)
+
+
 @app.route('/add/transaction', methods=[GET, POST])
 @login_required
 def addtransaction():
@@ -437,11 +462,11 @@ def search():
     return render_template('test.html', buyers= buyers, plots= plots)
 
 
-@app.route('/filterplot/<status>', methods=[POST])
+@app.route('/rest/filterplot/<status>', methods=[POST])
 @login_required
 def filterplot(status):
 
-    plots = Plot.query.filter_by(status=status).all()
+    plots = Plot.query.all() if status=='all' else Plot.query.filter_by(status=status).all()
 
     return jsonify(json_list=[plot.serialize for plot in plots])
 

@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+      
+	  <legend>Buyer ID {{buyer.id}}:</legend>
+
+      <p>
+        Buyer Name: {{ buyer.name }}</br>
+        Buyer CNIC: {{ buyer.cnic }}</br>
+        {% if buyer.comments %}
+          Comments: {{ buyer.comments }}</br>
+        {% endif %}
+        {% if buyer.deals[0] %}
+          Buyer's Deals:
+          {% for deal in buyer.deals %}
+            {{ deal.id }}
+          {% endfor %}
+          <br>
+        {% endif %}
+      </p>
+
+{% endblock %}

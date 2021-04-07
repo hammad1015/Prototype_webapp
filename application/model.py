@@ -87,7 +87,8 @@ class Plot(db.Model):
                'status'   : self.status,
                'price'    : self.price,
                'size'     : self.size,
-               'comments' : self.status,
+               'comments' : self.comments,
+               'deal'     : self.deal.serialize if self.deal else None
               }
 
 
@@ -109,6 +110,18 @@ class Deal(db.Model):
 
     #Relationships:
     transactions = db.relationship("Transaction", backref="deal_object", lazy=True)
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+               'id'                     : self.id,               
+               'status'                 : self.status,
+               'signing_date'           : self.signing_date,
+               'amount_per_installment' : self.amount_per_installment,
+               'installment_frequency'  : self.installment_frequency,
+               'comments'               : self.comments,
+              }
 
 
 class Transaction(db.Model):
