@@ -8,8 +8,8 @@
 			<form method="POST" action="/login" class="form-style">
 				<fieldset class="form-group">
 					{{ form.csrf_token }}
-					<legend class="text-orange-1">Login</legend>
-
+					<legend class="text-orange-1 text-center">Login</legend>
+					<br>
 					<div class="form-group">
 						{{ form.email.label(class='text-dark-3') }}
 						{% if form.email.errors %}
@@ -40,8 +40,8 @@
 						{% endif %}
 
 					</div>
-
-					<div class="form-group">
+					<br>
+					<div class="form-group btn-center">
 						{{ form.submit(class='btn btn-outline-dark') }}
 					</div>
 
