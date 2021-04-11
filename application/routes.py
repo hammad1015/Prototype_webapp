@@ -21,6 +21,7 @@ POST = 'POST'
 @app.route('/'    , methods= [GET])
 @app.route('/home', methods= [GET])
 def home():
+    print(url_for('static', filename=''))
     return render_template('home.html')
 
 
@@ -469,4 +470,47 @@ def filterplot(status):
     plots = Plot.query.all() if status=='all' else Plot.query.filter_by(status=status).all()
 
     return jsonify(json_list=[plot.serialize for plot in plots])
+
+
+@app.route('/rest/buyer/all', methods=[GET, POST])
+@login_required
+def allbuyers():
+
+    buyers = Buyer.query.all()
+    return jsonify(json_list=[buyer.serialize for buyer in buyers])
+
+
+@app.route('/rest/plot/all', methods=[GET, POST])
+@login_required
+def allplots():
+
+    plots = Plot.query.all()
+    print(len(plots))
+    return jsonify(json_list=[plot.serialize for plot in plots])
+
+
+@app.route('/rest/deal/all', methods=[GET, POST])
+@login_required
+def alldeals():
+
+    deals = Deal.query.all()
+    return jsonify(json_list=[deal.serialize for deal in deals])
+
+
+
+@app.route('/rest/CA/all', methods=[GET, POST])
+@login_required
+def allCAs():
+
+    CAs = CommissionAgent.query.all()
+    return jsonify(json_list=[CA.serialize for CA in CAs])
+
+
+@app.route('/rest/ET/all', methods=[GET, POST])
+@login_required
+def allETs():
+
+    ETs = Expenditure.query.all()
+    return jsonify(json_list=[ET.serialize for ET in ETs])
+
 
