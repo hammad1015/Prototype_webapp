@@ -2,7 +2,7 @@ from flask              import Flask, url_for
 from flask_sqlalchemy   import SQLAlchemy
 from flask_login        import LoginManager
 from flask_admin        import Admin
-from flask_cors         import CORS
+#from flask_cors         import CORS
 
 from flask_admin.base   import MenuLink
 
