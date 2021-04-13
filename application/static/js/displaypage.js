@@ -20,12 +20,14 @@ function make_plot_card(plot){
 	
 	let str = "<p>" +
 				"Plot ID: "     	+ plot.id 		+ "</br>" +
-				"Plot Type: " 		+ plot.type 		+ "</br>" +
+				"Plot Type: " 		+ plot.type 	+ "</br>" +
 				"Plot Address: "	+ plot.address 	+ "</br>" +
 				"Plot Status: " 	+ plot.status 	+ "</br>";
 
 	if(!plot.price)
-		str += "Plot Price: <span style='color: red;''>Not Set</span></br>";
+		str += "Plot Price: <span style='color: red;'>Not Set</span></br>";
+	else
+		str += "Plot Price: " + plot.price + " </br>";
 
 	str += "Plot Size: " 		+ plot.size 		+ "</br>" +
 		   "Plot Comments: " 	+ plot.comments 	+ "</br>";
