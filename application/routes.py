@@ -114,7 +114,7 @@ def add():
 @login_required
 def display():
    
-    active = request.args.get("active") or "buyers"
+    active = request.args.get("active") or "buyer"
     buyers = Buyer.query.all()
     plots  = Plot.query.all()
     CAs    = CommissionAgent.query.all()

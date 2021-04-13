@@ -1,5 +1,4 @@
 from application import create_app
-# from OpenSSL import SSL
 
 app = create_app()
 

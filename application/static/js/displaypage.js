@@ -3,6 +3,7 @@ let tabs = ["buyer", "plot", "CA", "ET", "deal"];
 
 
 function clicked(name){
+	
 	//Turning on the cliked div
 	document.getElementById(name+"-div").style.display = 'block';
 
@@ -39,8 +40,28 @@ function make_plot_card(plot){
 	return str + "</p>\n";
 }
 
-function make_buyer_card(bueyr){}
-function make_deal_card(deal){}
+function make_buyer_card(buyer){
+
+	let str = "<p>" +
+				"Buyer ID: "    + buyer.id    + "</br>" +
+				"Buyer Name: "  + buyer.name  + "</br>" +
+				"Buyer CNIC: "  + buyer.cnic  + "</br>" +
+			  "</p>";
+
+	return str;
+}
+
+function make_deal_card(deal){
+
+	let str = "<p>" +
+				"Deal ID: "    		+ deal.id    		+ "</br>" +
+				"Date of Signing: " + deal.signing_date + "</br>" +
+				"Plot ID: "  		+ buyer.plot.id  	+ "</br>" +
+			  "</p>";
+
+	return str;
+
+}
 function make_CA_card(CA){}
 function make_ET_card(ET){}
 
@@ -56,7 +77,7 @@ function inject_div(name, list){
 
 function getall(name){
 	
-	clicked(name);
+	clicked((name || "buyer"));
 	$.post('/rest/'+name+'/all', function(data){
 		inject_div(name, data.json_list);
 	});	
