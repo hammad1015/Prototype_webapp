@@ -2,4 +2,6 @@
 .vscode
 config.py
 wsgi.py
+initSQL.sql
 __pycache__
+/application/__pycache__
