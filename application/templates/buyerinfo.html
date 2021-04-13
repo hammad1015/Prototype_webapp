@@ -1,22 +1,58 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-      
-	  <legend>Buyer ID {{buyer.id}}:</legend>
 
-      <p>
-        Buyer Name: {{ buyer.name }}</br>
-        Buyer CNIC: {{ buyer.cnic }}</br>
-        {% if buyer.comments %}
-          Comments: {{ buyer.comments }}</br>
-        {% endif %}
-        {% if buyer.deals[0] %}
-          Buyer's Deals:
-          {% for deal in buyer.deals %}
-            {{ deal.id }}
-          {% endfor %}
-          <br>
-        {% endif %}
-      </p>
+<!-- new -->
+<section class="my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-9">
+        <table class="table mt-4">
+          <thead>
+            <tr>
+              <th scope="col" colspan="2">
+                <h1 class="text-orange-1 text-center">Buyer Information</h1>
+                <p class="text-dark-3 text-center">All the buyer's information is listed here</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-dark-3">
+              <th scope="row">ID</th>
+              <td>{{buyer.id}}</td>
+            </tr>
+            <tr class="text-dark-3">
+              <th scope="row">Name</th>
+              <td>{{buyer.name}}</td>
+            </tr>
+            <tr class="text-dark-3">
+              <th scope="row">CNIC</th>
+              <td>{{buyer.cnic}}</td>
+            </tr>
+            <tr class="text-dark-3">
+              <th scope="row">Comments</th>
+              {% if buyer.comments %}
+              <td>{{buyer.comments}}</td>
+              {% endif %}
+              {% if buyer.deals[0] %}
+            </tr>
+            <tr class="text-dark-3">
+              <th scope="row">Deals</th>
+              <td>
+                {% for deal in buyer.deals %}
+                {{ deal.id }}
+                <br>
+                {% endfor %}
+              </td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-12 col-md-3 notes-icon"><i class="fas fa-user-tie"></i></div>
+    </div>
+  </div>
+</section>
+<!-- new -->
 
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 
+<<<<<<< HEAD
 {% block content %}	
     
     <div class="text-center">
@@ -63,3 +64,168 @@
 {% block script %}
 	<script src="{{ url_for('static', filename='js/displaypage.js') }}"></script>
 {% endblock %}
+=======
+{% block content %}
+
+<div class="text-center">
+	<button id="buyers-button" onclick="clicked('buyers')">
+		Buyers
+	</button>
+	<button id="plots-button" onclick="clicked('plots')">
+		Plot
+	</button>
+	<button id="CAs-button" onclick="clicked('CAs')">
+		Commission Agent
+	</button>
+	<button id="ETs-button" onclick="clicked('ETs')">
+		Expenditure Types
+	</button>
+</div>
+
+<!-- Buyers -->
+{% if active == "buyers" %}
+<div id="buyers-div" style="display: block;">
+	{% else %}
+	<div id="buyers-div" style="display: none;">
+		{% endif %}
+		{% for buyer in buyers %}
+		<div class="row pl-5">
+
+			<legend>
+				<strong>
+					<a href="{{ url_for('buyerinfo', buyer_id=buyer.id) }}">Buyer ID {{buyer.id}}:</a>
+				</strong>
+			</legend>
+
+			<p>
+				Buyer Name: {{ buyer.name }}</br>
+				Buyer CNIC: {{ buyer.cnic }}</br>
+				{% if buyer.comments %}
+				Comments: {{ buyer.comments }}</br>
+				{% endif %}
+				{% if buyer.deals[0] %}
+				Buyer's Deals:
+				{% for deal in buyer.deals %}
+				{{ deal.id }}
+				{% endfor %}
+				<br>
+				{% endif %}
+			</p>
+		</div>
+
+		<div class="row pl-5 pb-4 border-bottom border-secondary">
+			{% if not current_user.rank %}
+
+			<button class="btn btn-outline-danger btn-sm"><a class="deleteLink"
+					href="{{ url_for('deletebuyer', buyer_id=buyer.id) }}">Delete Buyer</a></button>
+
+			{% endif %}
+
+			<button class="btn btn-outline-secondary btn-sm  ml-2"><a
+					href="{{ url_for('editbuyer', buyer_id=buyer.id) }}">Edit Buyer Info</a></button>
+
+		</div>
+		<br><br>
+
+		{% endfor %}
+	</div>
+
+	<!-- Plots -->
+	{% if active == "plots" %}
+	<div id="plots-div" style="display: block;">
+		{% else %}
+		<div id="plots-div" style="display: none;">
+			{% endif %}
+
+			<div class="row pl-4 my-3">
+				<div class="col-2">
+					{{ filterPlotForm.status.label }}
+				</div>
+				<div class="col-6">
+					{{ filterPlotForm.status(class='form-control') }}
+				</div>
+				<div class="col-4">
+					{{ filterPlotForm.filter(class='btn btn-outline-primary', id='filter-btn') }}
+				</div>
+			</div>
+
+			<div id="plots-info">
+				{% for plot in plots %}
+				<div class="row pl-5">
+
+					<legend>
+						<strong>
+							<a href="{{ url_for('plotinfo', plot_id=plot.id) }}">Plot ID {{plot.id}}:</a>
+						</strong>
+					</legend>
+
+					<p>
+						Plot Address: {{ plot.address }}</br>
+
+						{% if not plot.price %}
+						Plot Price: <span style="color: red;">Not Set</span>
+						&nbsp&nbsp&nbsp&nbsp&nbsp
+						{% if not current_user.rank %}
+						(<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Set Plot Price</a>)
+						{% endif %}
+						{% else %}
+						Plot Price: {{ plot.price }}
+						&nbsp&nbsp&nbsp&nbsp&nbsp
+						{% if not current_user.rank %}
+						(<a href="{{ url_for('editplotprice', plot_id=plot.id) }}">Edit Plot Price</a>)
+						{% endif %}
+						{% endif %}</br>
+
+						Plot Size: {{ plot.size }}</br>
+						Status: {{ plot.status }}</br>
+
+						{% if plot.comments %}
+						Comments: {{ plot.comments }}</br>
+						{% endif %}
+
+						{% if plot.deal %}
+						Plot's Deal:
+						<a href="{{ url_for('dealinfo', deal_id=plot.deal.id) }}">
+							{{ plot.deal.id }}
+						</a></br>
+						{% endif %}
+					</p>
+
+				</div>
+				<hr />
+				{% endfor %}
+			</div>
+		</div>
+
+		<!-- CAs -->
+		{% if active == "CAs" %}
+		<div id="CAs-div" style="display: block;">
+			{% else %}
+			<div id="CAs-div" style="display: none;">
+				{% endif %}
+				{% for CA in CAs %}
+				{% endfor %}
+			</div>
+
+			<!-- ETs -->
+			{% if active == "ETs" %}
+			<div id="ETs-div" style="display: block;">
+				{% else %}
+				<div id="ETs-div" style="display: none;">
+					{% endif %}
+					{% for ET in ETs %}
+
+					<legend>Expenditure Type: {{ ET.name }}</legend>
+
+					{% endfor %}
+				</div>
+
+				{% endblock %}
+
+				{% block script %}
+				<script src="{{ url_for('static', filename='js/displaypage.js') }}"></script>
+				<script type="text/javascript">
+					clicked("{{ active }}");
+				</script>
+				{% endblock %}
+>>>>>>> 7b2c9d6fd2642c629e568a604d2c2e63f41c0734
