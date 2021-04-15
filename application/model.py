@@ -150,8 +150,8 @@ class Transaction(db.Model):
     comments  = db.Column(db.Text    , nullable= True, default=None)
 
     #ForeginKey Columns:
-    deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=False)
-    #expense_id = Foreginkey reference to Expense table
+    deal_id         = db.Column(db.Integer, db.ForeignKey('deal.id'))
+    expenditure_id  = db.Column(db.Integer, db.ForeignKey('expenditure.id'))
 
 
 class Notes(db.Model):
@@ -174,6 +174,9 @@ class Expenditure(db.Model):
     #Attribute Columns:
     id   = db.Column(db.Integer,     primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+
+    #Relationships:
+    transactions = db.relationship("Transaction", backref="expenditure_object", lazy=True)
 
     @property
     def serialize(self):

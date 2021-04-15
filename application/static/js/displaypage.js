@@ -56,19 +56,28 @@ function make_buyer_card(buyer){
 function make_deal_card(deal){
 
 	let str = "<p>" +
-				"Deal ID: "    		+ deal.id    		+ "</br>" +
-				"Date of Signing: " + deal.signing_date + "</br>" +
-				"Plot ID: "  		+ buyer.plot.id  	+ "</br>" +
+				"Deal ID: "    			+ deal.id    		+ "(<a href='/add/transaction/receivepayment/"+ deal.id +"'>Recieve Payment</a>)</br>" +
+				"Date of Signing: " 	+ deal.signing_date + "</br>" +
+				"Respective Plot ID: "  + deal.plot_id  	+ "</br>" +
+				"Respective Buyer ID: " + deal.plot_id  	+ "</br>" +
 			  "</p>";
 
 	return str;
 
 }
 function make_CA_card(CA){}
-function make_ET_card(ET){}
+function make_ET_card(ET){
+
+	let str = "<p>" +
+				"Expenditure Type: " + ET.name +
+				"(<a href='/add/transaction/expense/"+ ET.id +
+				"'>Add Expense of this type</a>)</br>"
+
+	return str
+}
 
 function inject_div(name, list){
-
+	console.log(list)
 	let str 	   = '';
 	let make_card  = window['make_'+name+'_card'];
 	for(let element of list){

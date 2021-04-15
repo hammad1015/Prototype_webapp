@@ -111,6 +111,10 @@ def display():
     active = request.args.get("active") or "buyer"
     filterPlotForm = FilterPlotForm()
 
+    if active[-1] == "+":
+        active = active[:-1]
+        flash('Chose a Deal to Recieve Payment', 'info')
+
     return render_template('display.html', active=active, filterPlotForm=filterPlotForm)
 
 
@@ -246,6 +250,7 @@ def adddeal():
         buyer = Buyer.query.filter_by(id= form.buyer_id.data).first()
 
         # Applying validity checks
+        ####    ALSO CHECK IF PLOT PRICE IS SET  ###
         if plot is None:       
             flash(f'No plot exists with Plot ID: {form.plot_id.data}',  'danger')
             return render_template('adddeal.html', form=form)
@@ -316,14 +321,38 @@ def dealinfo(deal_id):
     return render_template('dealinfo.html', deal=deal)
 
 
-@app.route('/add/transaction', methods=[GET, POST])
+@app.route('/add/transaction/<type>/<id>', methods=[GET, POST])
 @login_required
-def addtransaction():
+def addtransaction(type, id):
 
-    form = AddTransactionForm()
+    if type == 'receivepayment':
+        form   = AddTransactionForm(deal_id=id)
+        deal_id = id
+        exp_id  = None
+    elif type == 'expense':
+        form  = AddTransactionForm(exp_id=id)
+        deal_id = None
+        exp_id  = id
+    else:
+        abort(404)
 
     if form.validate_on_submit():
-        pass
+        transaction = Transaction(
+            amount      = form.amount.data,
+            date_time   = datetime.now(),
+            comments    = form.comments.data or db.null(),
+            deal_id     = deal_id,
+            expenditure_id = exp_id
+        )
+
+        db.session.add(transaction)
+        db.session.commit()
+
+        flash('Transaction Successfuly Added', 'success')
+        return redirect(url_for('profile'))
+        
+
+    return render_template('addtransaction.html', form=form, type=type)
 
 
 @app.route('/add/notes', methods=[GET, POST])
@@ -394,7 +423,7 @@ def addexpendituretype():
         db.session.commit()
 
         flash(f'New Expenditure Type \'{form.name.data}\' Created', 'success')
-        return redirect(url_for('display', active="ETs"))
+        return redirect(url_for('display', active="ET"))
 
 
     return render_template('addexpendituretype.html', form=form)
