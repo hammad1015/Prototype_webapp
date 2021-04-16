@@ -3,14 +3,15 @@ from flask              import current_app as app
 from flask_login        import login_required, logout_user, current_user, login_user
 from flask_sqlalchemy   import sqlalchemy
 
+from .controller        import *
 from .forms             import * # LoginForm, AddBuyerForm, AddDealForm, SearchBuyerForm, DeleteBuyerForm, EditBuyerForm, AddNotesForm, AddNormalUserForm, SearchForm, 
-from .model             import * # db, User, Buyer, Deal, Plot, Transaction, Notes
+#from .model             import * # db, User, Buyer, Deal, Plot, Transaction, Notes
 from .middleware        import Middleware
 from .                  import login_manager
 from .                  import admin
 
 from datetime           import datetime
-from application        import middleware
+#from application        import middleware
 
 
 #Setting utility variables
@@ -52,18 +53,11 @@ def login():
         flash('You are already logged in', 'info')
         return redirect(url_for('profile'))  
 
-    #Middleware.authorizeGuest(current_user)
-
     form = LoginForm()
-    # Validate login attempt
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and user.check_password(password1=form.password.data):
-            login_user(user)
-            flash(f'Welcome {user.username}', 'success')
+    if form.validate_on_submit():        
+        if login_(form.email.data, form.password.data):
             return redirect(url_for('profile'))
 
-        flash('Invalid username/password combination', 'danger')
         return redirect(url_for('login'))  
 
     return render_template('loginpage.html', form=form)
@@ -115,15 +109,13 @@ def add():
 def display():
    
     active = request.args.get("active") or "buyer"
-    buyers = Buyer.query.all()
-    plots  = Plot.query.all()
-    CAs    = CommissionAgent.query.all()
-    ETs    = Expenditure.query.all()
-
     filterPlotForm = FilterPlotForm()
 
-    return render_template('display.html', active=active, buyers=buyers, plots=plots, CAs=CAs, ETs=ETs, filterPlotForm=filterPlotForm)
+    if active[-1] == "+":
+        active = active[:-1]
+        flash('Chose a Deal to Recieve Payment', 'info')
 
+    return render_template('display.html', active=active, filterPlotForm=filterPlotForm)
 
 
 # @app.route("/display/buyers")
@@ -198,9 +190,8 @@ def editbuyer(buyer_id):
 @app.route('/buyer/<buyer_id>')
 @login_required
 def buyerinfo(buyer_id):
-    buyer_id = int(buyer_id) 
-    buyer = Buyer.query.filter_by(id=buyer_id).first()
-
+   
+    buyer = Buyer.query.filter_by(id=int(buyer_id) ).first()
     if buyer is None:
         flash('ERROR: NO Such buyer exists', 'danger')
         
@@ -209,9 +200,8 @@ def buyerinfo(buyer_id):
 @app.route('/plot/<plot_id>')
 @login_required
 def plotinfo(plot_id):
-    plot_id = int(plot_id) 
-    plot = Plot.query.filter_by(id=plot_id).first()
-
+    
+    plot = Plot.query.filter_by(id=int(plot_id) ).first()
     if plot is None:
         flash('ERROR: NO Such plot exists', 'danger')
         
@@ -229,10 +219,7 @@ def editplotprice(plot_id):
 
     form = SetPlotPrice(address=plot.address)
     if form.validate_on_submit():
-        db.session.query(Plot).filter_by(id=plot_id).update({'price': form.price.data})
-        db.session.commit()
-
-        flash('Plot Price Successfully Edited', 'success')
+        editplotprice_(plot_id, form.price.data)
         return redirect(url_for('plotinfo', plot_id=plot_id))
 
     return render_template('editplotprice.html', plot=plot, form=form)
@@ -243,25 +230,12 @@ def editplotprice(plot_id):
 def addbuyer():
 
     form = AddBuyerForm()
-    if form.validate_on_submit():        
-        try:
-            buyer = Buyer(
-                #id       = form.id.data,
-                name     = form.name.data,
-                cnic     = form.cnic.data,
-                comments = form.comments.data if form.comments.data else db.null()
-            )
+    if form.validate_on_submit():    
+        if addbuyer_(form.name.data, form.cnic.data, form.comments.data):
+            return redirect(url_for('profile')) 
+        else:
+            return render_template('addbuyer.html', form=form) 
 
-            db.session.add(buyer)
-            db.session.commit()
-
-            flash(f'Buyer with id "{buyer.id}" created', 'success')
-            return redirect(url_for('profile'))
-
-        except sqlalchemy.exc.IntegrityError:
-            flash('ERROR: A buyer with this CNIC already exists!', 'danger')
-            return render_template('addbuyer.html', form=form)         
-            
     return render_template('addbuyer.html',  form=form)
 
 
@@ -276,6 +250,7 @@ def adddeal():
         buyer = Buyer.query.filter_by(id= form.buyer_id.data).first()
 
         # Applying validity checks
+        ####    ALSO CHECK IF PLOT PRICE IS SET  ###
         if plot is None:       
             flash(f'No plot exists with Plot ID: {form.plot_id.data}',  'danger')
             return render_template('adddeal.html', form=form)
@@ -346,14 +321,38 @@ def dealinfo(deal_id):
     return render_template('dealinfo.html', deal=deal)
 
 
-@app.route('/add/transaction', methods=[GET, POST])
+@app.route('/add/transaction/<type>/<id>', methods=[GET, POST])
 @login_required
-def addtransaction():
+def addtransaction(type, id):
 
-    form = AddTransactionForm()
+    if type == 'receivepayment':
+        form   = AddTransactionForm(deal_id=id)
+        deal_id = id
+        exp_id  = None
+    elif type == 'expense':
+        form  = AddTransactionForm(exp_id=id)
+        deal_id = None
+        exp_id  = id
+    else:
+        abort(404)
 
     if form.validate_on_submit():
-        pass
+        transaction = Transaction(
+            amount      = form.amount.data,
+            date_time   = datetime.now(),
+            comments    = form.comments.data or db.null(),
+            deal_id     = deal_id,
+            expenditure_id = exp_id
+        )
+
+        db.session.add(transaction)
+        db.session.commit()
+
+        flash('Transaction Successfuly Added', 'success')
+        return redirect(url_for('profile'))
+        
+
+    return render_template('addtransaction.html', form=form, type=type)
 
 
 @app.route('/add/notes', methods=[GET, POST])
@@ -424,7 +423,7 @@ def addexpendituretype():
         db.session.commit()
 
         flash(f'New Expenditure Type \'{form.name.data}\' Created', 'success')
-        return redirect(url_for('display', active="ETs"))
+        return redirect(url_for('display', active="ET"))
 
 
     return render_template('addexpendituretype.html', form=form)
