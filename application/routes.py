@@ -308,6 +308,32 @@ def adddeal():
     return render_template('adddeal.html', form= form)
 
 
+@app.route('/add/addtransaction', methods=[GET, POST])
+@login_required
+def addtransaction():
+
+    form = AddTransactionForm()
+
+
+    # if form.validate_on_submit():
+    #     id = form.
+    #     transaction = Transaction(
+    #         amount      = form.amount.data,
+    #         date_time   = datetime.now(),
+    #         comments    = form.comments.data or db.null(),
+    #         deal_id     = deal_id,
+    #         expenditure_id = exp_id
+    #     )
+
+    #     db.session.add(transaction)
+    #     db.session.commit()
+
+    #     flash('Transaction Successfuly Added', 'success')
+    #     return redirect(url_for('profile'))
+        
+
+    return render_template('addtransaction.html', form=form, type=type)
+
 @app.route('/dealinfo/<deal_id>')
 @login_required
 def dealinfo(deal_id):
@@ -321,38 +347,39 @@ def dealinfo(deal_id):
     return render_template('dealinfo.html', deal=deal)
 
 
-@app.route('/add/transaction/<type>/<id>', methods=[GET, POST])
-@login_required
-def addtransaction(type, id):
+# @app.route('/add/transaction/<type>/<id>', methods=[GET, POST])
+# @login_required
+# def addtransaction(type, id):
 
-    if type == 'receivepayment':
-        form   = AddTransactionForm(deal_id=id)
-        deal_id = id
-        exp_id  = None
-    elif type == 'expense':
-        form  = AddTransactionForm(exp_id=id)
-        deal_id = None
-        exp_id  = id
-    else:
-        abort(404)
+#     if type == 'receivepayment':
+#         form   = AddTransactionForm(deal_id=id)
+#         deal_id = id
+#         exp_id  = None
+#     elif type == 'expense':
+#         form  = AddTransactionForm(exp_id=id)
+#         deal_id = None
+#         exp_id  = id
+#     else:
+#         abort(404)
 
-    if form.validate_on_submit():
-        transaction = Transaction(
-            amount      = form.amount.data,
-            date_time   = datetime.now(),
-            comments    = form.comments.data or db.null(),
-            deal_id     = deal_id,
-            expenditure_id = exp_id
-        )
+#     if form.validate_on_submit():
+#         transaction = Transaction(
+#             amount      = form.amount.data,
+#             date_time   = datetime.now(),
+#             comments    = form.comments.data or db.null(),
+#             deal_id     = deal_id,
+#             expenditure_id = exp_id
+#         )
 
-        db.session.add(transaction)
-        db.session.commit()
+#         db.session.add(transaction)
+#         db.session.commit()
 
-        flash('Transaction Successfuly Added', 'success')
-        return redirect(url_for('profile'))
+#         flash('Transaction Successfuly Added', 'success')
+#         return redirect(url_for('profile'))
         
 
-    return render_template('addtransaction.html', form=form, type=type)
+#     return render_template('addtransaction.html', form=form, type=type)
+
 
 
 @app.route('/add/notes', methods=[GET, POST])

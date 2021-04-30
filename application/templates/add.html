@@ -4,6 +4,7 @@
 <!-- new -->
 <section class="service-area" id="services">
 	<div class="container">
+        <!-- page header -->
 		<div class="row mt-5">
 			<div class="col-12">
 				<div class="section-title text-center">
@@ -13,7 +14,11 @@
 			</div>
 		</div>
 		<br><br>
+
+
 		<div class="row">
+
+            <!------------- new buyer ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('addbuyer') }}">
 					<div class="service-wrap text-center">
@@ -25,6 +30,8 @@
 					</div>
 				</a>
 			</div>
+
+            <!------------- normal user ------------->
 			{% if not current_user.rank %}
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('addnormaluser') }}">
@@ -38,6 +45,8 @@
 				</a>
 			</div>
 			{% endif %}
+
+            <!------------- deal ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('adddeal') }}">
 					<div class="service-wrap text-center">
@@ -50,6 +59,20 @@
 				</a>
 			</div>
 
+            <!------------- transaction ------------->
+			<div class="col-12 col-md-6 col-xl-4">
+				<a href="{{ url_for('addtransaction') }}">
+					<div class="service-wrap text-center">
+						<div class="service-icon">
+							<i class="fas fa-user-tie"></i>
+						</div>
+						<h3>Add Transaction</h3>
+						<p>Add new transaction</p>
+					</div>
+				</a>
+			</div>
+
+            <!------------- notes ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('addnotes') }}">
 					<div class="service-wrap text-center">
@@ -61,6 +84,8 @@
 					</div>
 				</a>
 			</div>
+
+            <!------------- payment ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('display', active='deal+') }}">
 					<div class="service-wrap text-center">
@@ -72,6 +97,8 @@
 					</div>
 				</a>
 			</div>
+
+            <!------------- expense ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="#">
 					<div class="service-wrap text-center">
@@ -83,6 +110,8 @@
 					</div>
 				</a>
 			</div>
+
+            <!------------- expenditure ------------->
 			<div class="col-12 col-md-6 col-xl-4">
 				<a href="{{ url_for('addexpendituretype') }}">
 					<div class="service-wrap text-center">
